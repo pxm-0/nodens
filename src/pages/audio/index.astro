@@ -1,0 +1,7 @@
+---
+import { getCollection } from 'astro:content';
+import SectionPage from '../../components/SectionPage.astro';
+import { sortEntries } from '../../lib/content';
+const entries = sortEntries(await getCollection('entries', ({ data }) => data.section === 'audio' && !data.draft));
+---
+<SectionPage section="audio" entries={entries} />

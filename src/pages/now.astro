@@ -1,0 +1,24 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+---
+<BaseLayout title="Now" description="What is currently active across Nodens.">
+  <main class="page-shell" id="main">
+    <div class="page-wrap formal-grid">
+      <div>
+        <p class="eyebrow">Current state / revised July 2026</p>
+        <h1>Now</h1>
+      </div>
+      <div class="formal-copy">
+        <ul class="formal-list">
+          <li><strong>Building</strong><br />Locigraph, Phase IV of VI. Core system development continues; authentication, deployment readiness, and production hardening remain.</li>
+          <li><strong>Infrastructure</strong><br />Oreo Cloud, moving from personal-server vision toward a repeatable path from idea to deployed project.</li>
+          <li><strong>Writing</strong><br />Essays and fragments around control, attention, systems, and emotional latency.</li>
+          <li><strong>Brewing</strong><br />V60, 14.6 g doses, searching for clarity without thinness.</li>
+          <li><strong>Listening</strong><br />Apple Music lossless through the DX3 Pro+ and Mega5EST.</li>
+        </ul>
+      </div>
+    </div>
+  </main>
+  <SiteFooter slot="footer" />
+</BaseLayout>

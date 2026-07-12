@@ -1,0 +1,59 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SiteFooter from './SiteFooter.astro';
+import EntryList from './EntryList.astro';
+import ProjectCard from './ProjectCard.astro';
+import { sectionMeta, type SectionKey } from '../lib/content';
+
+interface Props {
+  section: SectionKey;
+  entries: CollectionEntry<'entries'>[];
+  projects?: CollectionEntry<'projects'>[];
+}
+
+const { section, entries, projects = [] } = Astro.props;
+const meta = sectionMeta[section];
+---
+
+<BaseLayout title={meta.label} description={meta.description}>
+  <main class="page-shell" id="main">
+    <div class="page-wrap">
+      <header class="page-masthead">
+        <div>
+          <p class="eyebrow">Facet / {meta.label}</p>
+          <h1>{meta.label}</h1>
+        </div>
+        <div class="page-masthead-copy">
+          <h2>{meta.title}</h2>
+          <p>{meta.description}</p>
+          <div class="page-actions">
+            <a class="text-link" href="/">Return to exhibition →</a>
+            <a class="text-link" href="/index/">Open index ↗</a>
+          </div>
+        </div>
+      </header>
+
+      <div class="content-grid">
+        {projects.length > 0 && (
+          <section class="content-block content-block--wide">
+            <p class="eyebrow">Selected systems</p>
+            <h2>Projects</h2>
+            {projects.map((project) => <ProjectCard project={project} />)}
+          </section>
+        )}
+
+        <section class="content-block content-block--wide">
+          <p class="eyebrow">Published records</p>
+          <h2>{entries.length ? 'Entries' : 'The room is being furnished.'}</h2>
+          {entries.length ? (
+            <EntryList entries={entries} />
+          ) : (
+            <p>Notes, essays, and records for this facet will gather here without forcing the exhibition itself to carry the entire archive.</p>
+          )}
+        </section>
+      </div>
+    </div>
+  </main>
+  <SiteFooter slot="footer" />
+</BaseLayout>

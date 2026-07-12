@@ -1,0 +1,17 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { entryHref, formatDate } from '../lib/content';
+
+interface Props { entries: CollectionEntry<'entries'>[] }
+const { entries } = Astro.props;
+---
+
+<ul class="entry-list">
+  {entries.map((entry) => (
+    <li class="entry-row">
+      <time datetime={entry.data.publishedAt.toISOString()}>{formatDate(entry.data.publishedAt)}</time>
+      <a href={entryHref(entry)}>{entry.data.title}</a>
+      <small>{entry.data.kind}</small>
+    </li>
+  ))}
+</ul>

@@ -1,0 +1,25 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+const email = import.meta.env.PUBLIC_CONTACT_EMAIL ?? 'hello@example.com';
+const github = import.meta.env.PUBLIC_GITHUB_URL ?? 'https://github.com/pxm-0';
+---
+<BaseLayout title="Contact" description="Contact Nodens.">
+  <main class="page-shell" id="main">
+    <div class="page-wrap formal-grid">
+      <div>
+        <p class="eyebrow">Formal record / contact</p>
+        <h1>Contact</h1>
+      </div>
+      <div class="formal-copy">
+        <p>For work, collaboration, correspondence, or a conversation with enough substance to justify the bandwidth.</p>
+        <ul class="formal-list">
+          <li><a href={`mailto:${email}`}>Email · {email}</a></li>
+          <li><a href={github}>GitHub · pxm-0 ↗</a></li>
+        </ul>
+        <p><small>Replace the placeholder email through <code>PUBLIC_CONTACT_EMAIL</code> before deployment.</small></p>
+      </div>
+    </div>
+  </main>
+  <SiteFooter slot="footer" />
+</BaseLayout>

@@ -1,0 +1,19 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { projectHref } from '../lib/content';
+
+interface Props { project: CollectionEntry<'projects'> }
+const { project } = Astro.props;
+---
+
+<article class="project-card">
+  <h3><a href={projectHref(project)}>{project.data.title}</a></h3>
+  <div class="project-meta">
+    <span>{project.data.status}</span>
+    {project.data.phase && <span>{project.data.phase}</span>}
+    <span>{project.data.year}</span>
+  </div>
+  <p>{project.data.summary}</p>
+  {project.data.caveat && <p class="caveat">{project.data.caveat}</p>}
+  <a class="text-link" href={projectHref(project)}>Open record →</a>
+</article>

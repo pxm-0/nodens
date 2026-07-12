@@ -1,0 +1,9 @@
+---
+import { getCollection } from 'astro:content';
+import SectionPage from '../../components/SectionPage.astro';
+import { sortEntries } from '../../lib/content';
+
+const entries = sortEntries(await getCollection('entries', ({ data }) => data.section === 'engineering' && !data.draft));
+const projects = (await getCollection('projects')).sort((a, b) => Number(b.data.featured) - Number(a.data.featured));
+---
+<SectionPage section="engineering" entries={entries} projects={projects} />

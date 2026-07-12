@@ -1,0 +1,23 @@
+---
+interface Props { exhibition?: boolean }
+const { exhibition = false } = Astro.props;
+---
+
+<header class="site-header">
+  <a class="wordmark" href="/" aria-label="Nodens home">
+    <strong>Nodens</strong>
+    <small>Public edge / 01</small>
+  </a>
+  <nav class="utility-nav" aria-label="Primary">
+    <a href="/about/">About</a>
+    <a href="/contact/">Contact</a>
+    <a href="/now/">Now</a>
+    {exhibition ? (
+      <button class="index-toggle" id="indexToggle" aria-expanded="false" aria-controls="exhibitionIndex">
+        Index <span>＋</span>
+      </button>
+    ) : (
+      <a href="/index/">Index</a>
+    )}
+  </nav>
+</header>

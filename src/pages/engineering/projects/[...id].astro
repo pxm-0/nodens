@@ -1,0 +1,34 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import SiteFooter from '../../../components/SiteFooter.astro';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects');
+  return projects.map((project) => ({ params: { id: project.id }, props: { project } }));
+}
+
+const { project } = Astro.props;
+const { Content } = await render(project);
+---
+
+<BaseLayout title={project.data.title} description={project.data.summary}>
+  <main class="article-shell" id="main">
+    <article class="article">
+      <header class="article-header">
+        <div class="article-meta">
+          <a href="/engineering/">engineering</a>
+          <span>{project.data.status}</span>
+          {project.data.phase && <span>{project.data.phase}</span>}
+          <span>{project.data.year}</span>
+        </div>
+        <h1>{project.data.title}</h1>
+        <p class="dek">{project.data.subtitle}</p>
+        {project.data.caveat && <p class="dek" style="color: var(--wine);">{project.data.caveat}</p>}
+      </header>
+      <div class="prose"><Content /></div>
+      <a class="text-link" href="/engineering/">Return to engineering →</a>
+    </article>
+  </main>
+  <SiteFooter slot="footer" />
+</BaseLayout>

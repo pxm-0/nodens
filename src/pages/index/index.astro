@@ -1,0 +1,55 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SiteFooter from '../../components/SiteFooter.astro';
+import EntryList from '../../components/EntryList.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+import { sortEntries } from '../../lib/content';
+
+const entries = sortEntries(await getCollection('entries', ({ data }) => !data.draft));
+const projects = await getCollection('projects');
+---
+<BaseLayout title="Index" description="A direct index of Nodens.">
+  <main class="page-shell" id="main">
+    <div class="page-wrap">
+      <header class="page-masthead">
+        <div><p class="eyebrow">Direct route / no pilgrimage required</p><h1>Index</h1></div>
+        <div class="page-masthead-copy">
+          <h2>The complete public surface.</h2>
+          <p>The exhibition is one path. This is the practical map for visitors who already know what they need.</p>
+          <div class="page-actions"><a class="text-link" href="/">Enter exhibition →</a></div>
+        </div>
+      </header>
+      <div class="content-grid">
+        <section class="content-block">
+          <p class="eyebrow">Facets</p>
+          <h2>Rooms</h2>
+          <ul class="formal-list">
+            <li><a href="/engineering/">Engineering</a></li>
+            <li><a href="/writing/">Writing</a></li>
+            <li><a href="/coffee/">Coffee</a></li>
+            <li><a href="/audio/">Audio</a></li>
+          </ul>
+        </section>
+        <section class="content-block">
+          <p class="eyebrow">Formal</p>
+          <h2>Records</h2>
+          <ul class="formal-list">
+            <li><a href="/about/">About</a></li>
+            <li><a href="/now/">Now</a></li>
+            <li><a href="/contact/">Contact</a></li>
+          </ul>
+        </section>
+        <section class="content-block content-block--wide">
+          <p class="eyebrow">Engineering</p><h2>Projects</h2>
+          {projects.map((project) => <ProjectCard project={project} />)}
+        </section>
+        <section class="content-block content-block--wide">
+          <p class="eyebrow">Across all facets</p><h2>Entries</h2>
+          <EntryList entries={entries} />
+        </section>
+      </div>
+    </div>
+  </main>
+  <SiteFooter slot="footer" />
+</BaseLayout>

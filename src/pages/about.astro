@@ -1,0 +1,24 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+---
+<BaseLayout title="About" description="About the person behind Nodens.">
+  <main class="page-shell" id="main">
+    <div class="page-wrap formal-grid">
+      <div>
+        <p class="eyebrow">Formal record / about</p>
+        <h1>About</h1>
+      </div>
+      <div class="formal-copy">
+        <p>Nodens is a curated self-portrait assembled from engineering, writing, rituals, objects, and ongoing work.</p>
+        <p>The exhibition is intentionally indirect. This page is not. I am Dustin Aceveda, a software engineer, systems builder, and writer interested in knowledge architecture, automation, infrastructure, and the small practices through which attention becomes visible.</p>
+        <p>The public site is designed as a gallery rather than a résumé, but the practical facts remain available: I build software, document systems, publish writing, and maintain the infrastructure beneath my own projects.</p>
+        <div class="page-actions">
+          <a class="text-link" href="/engineering/">Engineering →</a>
+          <a class="text-link" href="/contact/">Contact →</a>
+        </div>
+      </div>
+    </div>
+  </main>
+  <SiteFooter slot="footer" />
+</BaseLayout>

@@ -1,0 +1,7 @@
+---
+import { getCollection } from 'astro:content';
+import SectionPage from '../../components/SectionPage.astro';
+import { sortEntries } from '../../lib/content';
+const entries = sortEntries(await getCollection('entries', ({ data }) => data.section === 'coffee' && !data.draft));
+---
+<SectionPage section="coffee" entries={entries} />
