@@ -26,7 +26,7 @@ cp .env.example .env
 docker compose up --build -d
 ```
 
-Route the domain through the server's existing reverse proxy to port `8080`.
+Route the domain through the server's existing reverse proxy to port `8081`.
 
 ## Updates
 
