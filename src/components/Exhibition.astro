@@ -1,47 +1,53 @@
+---
+import '../styles/exhibition.css';
+---
+
 <section class="exhibition-shell" aria-label="Nodens public exhibition">
-  <main class="exhibition-stage" id="main" aria-live="polite">
-    <section class="exhibition-frame frame--landing is-active" data-title="Threshold" data-route="/">
-      <div class="frame-inner">
-        <p class="eyebrow">Current exhibition / selected evidence</p>
-        <div class="landing-orbit" aria-hidden="true"></div>
-        <span class="facet-trace facet-trace--a">systems / structure</span>
-        <span class="facet-trace facet-trace--b">language / interiority</span>
-        <span class="facet-trace facet-trace--c">ritual / perception</span>
-        <h1 class="display landing-title">Evidence of an<br /><em>ongoing life.</em></h1>
-        <p class="landing-copy">
-          This is not a summary. It is a sequence of systems, texts, rituals, and traces through which a person becomes inferable.
-          <strong>The arrangement is the portrait.</strong>
-        </p>
-        <button class="frame-link landing-enter" type="button" data-next>Enter the exhibition <span>→</span></button>
+  <p class="visually-hidden" id="frameStatus" aria-live="polite" aria-atomic="true">Frame 1 of 6: Threshold</p>
+
+  <main class="exhibition-stage" id="main">
+    <section class="exhibition-frame frame--landing is-active" data-title="Threshold" data-route="/" data-tone="light" aria-hidden="false">
+      <div class="frame-inner landing-layout">
+        <p class="frame-sign"><span>01 / 06</span>Threshold</p>
+        <div class="landing-orbit" aria-hidden="true"><i></i><i></i><i></i></div>
+        <div class="landing-statement">
+          <p class="landing-register">Systems · Texts · Rituals · Records</p>
+          <h1 class="display landing-title">Evidence of an<br /><em>ongoing life.</em></h1>
+          <p class="landing-copy">
+            A sequence of things built, written, measured, and kept. The person appears in the arrangement.
+          </p>
+          <button class="frame-link landing-enter" type="button" data-next>Enter the exhibition <span aria-hidden="true">→</span></button>
+        </div>
       </div>
     </section>
 
-    <section class="exhibition-frame frame--engineer" data-title="Engineer" data-route="/engineering/">
-      <div class="frame-inner engineer-grid">
-        <div>
-          <p class="eyebrow">01 / Engineer</p>
+    <section class="exhibition-frame frame--engineer" data-title="Engineer" data-route="/engineering/" data-tone="light" aria-hidden="true" inert>
+      <div class="frame-inner engineer-layout">
+        <p class="frame-sign"><span>02 / 06</span>Engineer</p>
+        <div class="engineer-copy">
           <h2 class="display engineer-title">Systems made<br />to <em>persist.</em></h2>
           <p class="engineer-lede">Software, infrastructure, and the long route from an idea to something that survives contact with reality.</p>
           <div class="project-stack">
             <article class="project-slip">
-              <div class="phase-tag"><b>Phase IV / VI</b>Active</div>
+              <p class="phase-tag"><b>Phase IV / VI</b>Active</p>
               <div>
                 <h3>Locigraph</h3>
-                <p>Concept-centric memory through claims, revision, contradiction, and spatial retrieval. Core development is active; authentication, deployment readiness, and production hardening remain incomplete.</p>
+                <p>A claim graph built for revision, contradiction, and spatial retrieval.</p>
               </div>
             </article>
             <article class="project-slip">
-              <div class="phase-tag"><b>Vision → Project</b>Active</div>
+              <p class="phase-tag"><b>Vision → Project</b>Active</p>
               <div>
                 <h3>Oreo Cloud</h3>
-                <p>A personal infrastructure layer intended to carry ideas from architecture into running, observable projects on owned hardware.</p>
+                <p>Owned infrastructure that turns system designs into observable deployments.</p>
               </div>
             </article>
           </div>
-          <a class="frame-link" href="/engineering/">Enter engineering <span>↗</span></a>
+          <a class="frame-link engineer-enter" href="/engineering/">Enter engineering <span aria-hidden="true">↗</span></a>
         </div>
-        <div class="engineer-visual" aria-hidden="true">
-          <svg viewBox="0 0 700 760">
+
+        <figure class="system-plate">
+          <svg viewBox="0 0 700 760" aria-hidden="true">
             <path d="M80 560 210 410 335 500 455 315 610 390" />
             <path d="M210 410 270 185 455 315 520 100" />
             <path d="M335 500 390 655 610 390 650 620" />
@@ -52,76 +58,85 @@
             <circle cx="520" cy="100" r="7" /><circle cx="390" cy="655" r="10" />
             <circle cx="650" cy="620" r="8" /><circle cx="160" cy="675" r="7" />
           </svg>
-          <pre class="engineer-console">LOCIGRAPH / PHASE 04
-claim graph ........ ready
-revision history ... active
-contradiction ...... active
-planetarium ........ building
-authentication ..... pending
-deployment ......... pending
-hardening .......... pending</pre>
-        </div>
+          <figcaption class="system-state">
+            <p>Locigraph / Phase 04</p>
+            <dl>
+              <div><dt>Claim graph</dt><dd>Ready</dd></div>
+              <div><dt>Revision</dt><dd>Active</dd></div>
+              <div><dt>Contradiction</dt><dd>Active</dd></div>
+              <div><dt>Planetarium</dt><dd>Building</dd></div>
+            </dl>
+          </figcaption>
+        </figure>
       </div>
     </section>
 
-    <section class="exhibition-frame frame--writer" data-title="Writer" data-route="/writing/">
-      <div class="frame-inner">
-        <p class="eyebrow">02 / Writer</p>
+    <section class="exhibition-frame frame--writer" data-title="Writer" data-route="/writing/" data-tone="light" aria-hidden="true" inert>
+      <div class="frame-inner writer-layout">
+        <p class="frame-sign"><span>03 / 06</span>Writer</p>
         <h2 class="display writer-title">Language as<br /><em>instrument.</em></h2>
-        <span class="writer-rule" aria-hidden="true"></span>
         <blockquote class="writer-excerpt">“The things most correct for me survive by disappearing <em>into place.</em>”</blockquote>
-        <div class="writer-list">
-          <a href="/writing/the-thought-passed-today/"><small>Essay / 2026</small><span>The Thought Passed Today</span></a>
-          <a href="/writing/systems-that-disappear/"><small>Fragment / 2026</small><span>On Systems That Disappear When Correct</span></a>
-          <a href="/writing/notes-toward-specificity/"><small>Note / 2026</small><span>Notes Toward Specificity</span></a>
-        </div>
-        <a class="frame-link writer-enter" href="/writing/">Enter writing <span>↗</span></a>
+        <ol class="writer-list">
+          <li><a href="/writing/the-thought-passed-today/"><small>Essay · 2026</small><span>The Thought Passed Today</span></a></li>
+          <li><a href="/writing/systems-that-disappear/"><small>Fragment · 2026</small><span>On Systems That Disappear When Correct</span></a></li>
+          <li><a href="/writing/notes-toward-specificity/"><small>Note · 2026</small><span>Notes Toward Specificity</span></a></li>
+        </ol>
+        <a class="frame-link writer-enter" href="/writing/">Enter writing <span aria-hidden="true">↗</span></a>
       </div>
     </section>
 
-    <section class="exhibition-frame frame--coffee" data-title="Coffee" data-route="/coffee/">
-      <div class="frame-inner coffee-grid">
-        <div>
-          <p class="eyebrow">03 / Coffee</p>
+    <section class="exhibition-frame frame--coffee" data-title="Coffee" data-route="/coffee/" data-tone="light" aria-hidden="true" inert>
+      <div class="frame-inner coffee-layout">
+        <p class="frame-sign"><span>04 / 06</span>Coffee</p>
+        <div class="coffee-copy-block">
           <h2 class="display coffee-title">Ritual under<br /><em>measurement.</em></h2>
-          <p class="coffee-copy">A small daily system involving heat, timing, attention, and enough variables to turn breakfast into research.</p>
+          <p class="coffee-copy">A small daily system of heat, timing, attention, and enough variables to turn breakfast into research.</p>
           <dl class="brew-record">
             <div><dt>Dose</dt><dd>14.6 g</dd></div>
             <div><dt>Method</dt><dd>V60</dd></div>
             <div><dt>Grind</dt><dd>Medium</dd></div>
             <div><dt>Target</dt><dd>Clarity</dd></div>
           </dl>
-          <a class="frame-link coffee-enter" href="/coffee/">Enter coffee <span>↗</span></a>
+          <a class="frame-link coffee-enter" href="/coffee/">Enter coffee <span aria-hidden="true">↗</span></a>
         </div>
-        <div class="pour-study" aria-hidden="true">
-          <span class="pour-line"></span><span class="dripper"></span><span class="coffee-cup"></span>
-        </div>
+
+        <figure class="brew-dial" aria-label="Brew diagram: a 14.6 gram V60 calibrated for clarity">
+          <div class="brew-dial-face" aria-hidden="true">
+            <span class="dial-ring dial-ring--outer"></span>
+            <span class="dial-ring dial-ring--inner"></span>
+            <span class="dial-needle"></span>
+            <span class="dial-value"><strong>14.6</strong><small>grams</small></span>
+          </div>
+          <figcaption><span>Bloom · 00:45</span><span>Total · 02:40</span><span>Water · 94°</span></figcaption>
+        </figure>
       </div>
     </section>
 
-    <section class="exhibition-frame frame--audio" data-title="Audio" data-route="/audio/">
-      <div class="frame-inner audio-grid">
-        <div>
-          <p class="eyebrow">04 / Audio</p>
+    <section class="exhibition-frame frame--audio" data-title="Audio" data-route="/audio/" data-tone="dark" aria-hidden="true" inert>
+      <div class="frame-inner audio-layout">
+        <p class="frame-sign"><span>05 / 06</span>Audio</p>
+        <div class="audio-copy-block">
           <h2 class="display audio-title">Listening until<br />the chain <em>vanishes.</em></h2>
-          <p class="audio-copy">Equipment matters only long enough to make itself disappear. What remains is texture, placement, weight, and the record itself.</p>
+          <p class="audio-copy">Equipment matters only long enough to disappear. What remains is texture, placement, weight, and the record itself.</p>
           <p class="audio-chain">Apple Music lossless → Topping DX3 Pro+ → Mega5EST</p>
-          <a class="frame-link audio-enter" href="/audio/">Enter audio <span>↗</span></a>
+          <a class="frame-link audio-enter" href="/audio/">Enter audio <span aria-hidden="true">↗</span></a>
         </div>
-        <div class="wavefield" aria-hidden="true">
-          <svg viewBox="0 0 900 600" preserveAspectRatio="none">
+
+        <figure class="wavefield" aria-label="A paired waveform representing the current listening chain">
+          <svg viewBox="0 0 900 600" preserveAspectRatio="none" aria-hidden="true">
             <polyline points="0,300 55,300 82,260 110,350 146,210 180,390 220,270 260,315 300,294 348,120 390,468 430,250 470,330 510,288 555,175 598,420 640,245 690,335 740,275 790,300 840,292 900,300" />
             <polyline class="hot" points="0,330 70,330 104,300 135,355 182,250 224,405 270,295 320,340 370,318 410,210 458,430 500,280 555,365 610,290 660,345 710,315 760,328 820,320 900,330" />
           </svg>
-          <span class="wave-label">Current chain / listening room 01</span>
-        </div>
+          <figcaption>Current chain / listening room 01</figcaption>
+        </figure>
       </div>
     </section>
 
-    <section class="exhibition-frame frame--closing" data-title="The person" data-route="/about/">
-      <div class="frame-inner">
-        <p class="eyebrow">05 / Synthesis</p>
+    <section class="exhibition-frame frame--closing" data-title="Synthesis" data-route="/about/" data-tone="dark" aria-hidden="true" inert>
+      <div class="frame-inner closing-layout">
+        <p class="frame-sign"><span>06 / 06</span>Synthesis</p>
         <h2 class="display closing-copy">Different forms of attention.<br /><em>The same person.</em></h2>
+        <p class="closing-thesis">Concept in the encounter.<br />Clarity in the archive.</p>
         <nav class="closing-links" aria-label="Formal routes">
           <a href="/about/">About</a>
           <a href="/contact/">Contact</a>
@@ -133,105 +148,188 @@ hardening .......... pending</pre>
     </section>
   </main>
 
-  <nav class="exhibition-nav" aria-label="Exhibition navigation">
+  <nav class="exhibition-nav" aria-label="Frame navigation">
     <button id="previousFrame" type="button" aria-label="Previous frame">←</button>
-    <div class="exhibition-counter"><span id="frameNumber">01</span><i></i><span id="frameTotal">06</span></div>
+    <div class="exhibition-counter" aria-hidden="true"><span id="frameNumber">01</span><i></i><span id="frameTotal">06</span></div>
     <button id="nextFrame" type="button" aria-label="Next frame">→</button>
   </nav>
 
-  <aside class="index-panel" id="exhibitionIndex" aria-hidden="true">
+  <dialog class="index-panel" id="exhibitionIndex" aria-labelledby="indexTitle">
+    <button class="index-close" id="indexClose" type="button">Close index <span aria-hidden="true">×</span></button>
     <div class="index-panel-intro">
-      <h2>Exhibition index</h2>
+      <p class="frame-sign"><span>Directory</span>Six rooms</p>
+      <h2 id="indexTitle">Exhibition index</h2>
       <p>Follow the sequence or enter a facet directly. Formal pages remain available without completing the pilgrimage.</p>
-      <a class="frame-link" href="/index/">Open full site index <span>↗</span></a>
+      <a class="frame-link" href="/index/">Open full site index <span aria-hidden="true">↗</span></a>
     </div>
     <ol class="index-list" id="frameIndex"></ol>
-  </aside>
+  </dialog>
 </section>
 
 <script>
-  const frames = Array.from(document.querySelectorAll('.exhibition-frame'));
-  const previous = document.querySelector('#previousFrame');
-  const next = document.querySelector('#nextFrame');
-  const currentLabel = document.querySelector('#frameNumber');
-  const totalLabel = document.querySelector('#frameTotal');
-  const indexToggle = document.querySelector('#indexToggle');
-  const indexPanel = document.querySelector('#exhibitionIndex');
-  const indexList = document.querySelector('#frameIndex');
+  const frames = Array.from(document.querySelectorAll<HTMLElement>('.exhibition-frame'));
+  const previous = document.querySelector<HTMLButtonElement>('#previousFrame');
+  const next = document.querySelector<HTMLButtonElement>('#nextFrame');
+  const currentLabel = document.querySelector<HTMLElement>('#frameNumber');
+  const totalLabel = document.querySelector<HTMLElement>('#frameTotal');
+  const frameStatus = document.querySelector<HTMLElement>('#frameStatus');
+  const indexToggle = document.querySelector<HTMLButtonElement>('#indexToggle');
+  const indexPanel = document.querySelector<HTMLDialogElement>('#exhibitionIndex');
+  const indexClose = document.querySelector<HTMLButtonElement>('#indexClose');
+  const indexList = document.querySelector<HTMLOListElement>('#frameIndex');
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const indexButtons: HTMLButtonElement[] = [];
   let current = 0;
-  let locked = false;
-  let wheel = 0;
+  let lastNavigationAt = 0;
+  let wheelDelta = 0;
+  let wheelTimer: number | undefined;
+  let touchStart: { x: number; y: number } | null = null;
+
+  const transitionMs = () => prefersReducedMotion.matches ? 20 : 760;
+  const titleFor = (frame: HTMLElement) => frame.dataset.title || 'Untitled';
+  const toneFor = (frame: HTMLElement) => frame.dataset.tone || 'light';
+
+  function setChromeTone(frame: HTMLElement) {
+    document.body.dataset.exhibitionTone = toneFor(frame);
+  }
+
+  function updateIndexState() {
+    indexButtons.forEach((button, index) => {
+      if (index === current) button.setAttribute('aria-current', 'step');
+      else button.removeAttribute('aria-current');
+    });
+  }
+
+  function updateStatus() {
+    const frame = frames[current];
+    if (!frame) return;
+    if (currentLabel) currentLabel.textContent = String(current + 1).padStart(2, '0');
+    if (frameStatus) frameStatus.textContent = `Frame ${current + 1} of ${frames.length}: ${titleFor(frame)}`;
+    setChromeTone(frame);
+    updateIndexState();
+  }
 
   if (totalLabel) totalLabel.textContent = String(frames.length).padStart(2, '0');
 
   frames.forEach((frame, index) => {
+    const isActive = index === current;
+    frame.inert = !isActive;
+    frame.setAttribute('aria-hidden', String(!isActive));
+
     const item = document.createElement('li');
     const button = document.createElement('button');
-    const route = frame.getAttribute('data-route') || '/';
-    button.innerHTML = `<small>${String(index + 1).padStart(2, '0')}</small><strong>${frame.getAttribute('data-title')}</strong><span>${route}</span>`;
-    button.addEventListener('click', () => { go(index); closeIndex(); });
+    const route = frame.dataset.route || '/';
+    const title = titleFor(frame);
+    button.type = 'button';
+    button.setAttribute('aria-label', `Go to frame ${index + 1}: ${title}`);
+    button.innerHTML = `<small>${String(index + 1).padStart(2, '0')}</small><strong>${title}</strong><span>${route}</span>`;
+    button.addEventListener('click', () => {
+      go(index);
+      closeIndex();
+    });
     item.append(button);
     indexList?.append(item);
+    indexButtons.push(button);
   });
 
-  function go(target) {
-    if (locked || target === current) return;
-    locked = true;
+  function go(target: number) {
+    const normalized = (target + frames.length) % frames.length;
+    const now = Date.now();
+    if (now - lastNavigationAt < transitionMs() || normalized === current) return;
+
+    lastNavigationAt = now;
     const outgoing = frames[current];
-    target = (target + frames.length) % frames.length;
-    const incoming = frames[target];
-    outgoing?.classList.add('is-leaving');
-    outgoing?.classList.remove('is-active');
-    incoming?.classList.add('is-active');
-    current = target;
-    if (currentLabel) currentLabel.textContent = String(current + 1).padStart(2, '0');
+    const incoming = frames[normalized];
+    if (!outgoing || !incoming) return;
+
+    outgoing.classList.add('is-leaving');
+    outgoing.classList.remove('is-active');
+    outgoing.inert = true;
+    outgoing.setAttribute('aria-hidden', 'true');
+
+    incoming.inert = false;
+    incoming.setAttribute('aria-hidden', 'false');
+    incoming.classList.add('is-active');
+    current = normalized;
+    wheelDelta = 0;
+    updateStatus();
+
     window.setTimeout(() => {
-      outgoing?.classList.remove('is-leaving');
-      locked = false;
-    }, 1000);
+      outgoing.classList.remove('is-leaving');
+    }, transitionMs());
   }
 
   function openIndex() {
-    indexPanel?.classList.add('is-open');
-    indexPanel?.setAttribute('aria-hidden', 'false');
+    if (!indexPanel || indexPanel.open) return;
+    document.body.classList.add('index-open');
+    indexPanel.showModal();
+    window.requestAnimationFrame(() => indexPanel.classList.add('is-open'));
     indexToggle?.setAttribute('aria-expanded', 'true');
+    indexClose?.focus();
   }
+
   function closeIndex() {
-    indexPanel?.classList.remove('is-open');
-    indexPanel?.setAttribute('aria-hidden', 'true');
+    if (!indexPanel?.open) return;
+    indexPanel.classList.remove('is-open');
     indexToggle?.setAttribute('aria-expanded', 'false');
+    document.body.classList.remove('index-open');
+    setChromeTone(frames[current]);
+    window.setTimeout(() => {
+      if (indexPanel.open) indexPanel.close();
+      indexToggle?.focus();
+    }, prefersReducedMotion.matches ? 0 : 260);
   }
-  function toggleIndex() { indexPanel?.classList.contains('is-open') ? closeIndex() : openIndex(); }
 
   previous?.addEventListener('click', () => go(current - 1));
   next?.addEventListener('click', () => go(current + 1));
-  indexToggle?.addEventListener('click', toggleIndex);
-  document.querySelectorAll('[data-next]').forEach((item) => item.addEventListener('click', () => go(current + 1)));
+  indexToggle?.addEventListener('click', openIndex);
+  indexClose?.addEventListener('click', closeIndex);
+  indexPanel?.addEventListener('cancel', (event) => {
+    event.preventDefault();
+    closeIndex();
+  });
+  document.querySelectorAll<HTMLElement>('[data-next]').forEach((item) => item.addEventListener('click', () => go(current + 1)));
 
   document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape') return closeIndex();
-    if (indexPanel?.classList.contains('is-open')) return;
-    if (['ArrowRight', 'ArrowDown', 'PageDown', ' '].includes(event.key)) { event.preventDefault(); go(current + 1); }
-    if (['ArrowLeft', 'ArrowUp', 'PageUp'].includes(event.key)) { event.preventDefault(); go(current - 1); }
-    if (event.key.toLowerCase() === 'i') toggleIndex();
+    if (indexPanel?.open) {
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        closeIndex();
+      }
+      return;
+    }
+    if (['ArrowRight', 'ArrowDown', 'PageDown', ' '].includes(event.key)) {
+      event.preventDefault();
+      go(current + 1);
+    }
+    if (['ArrowLeft', 'ArrowUp', 'PageUp'].includes(event.key)) {
+      event.preventDefault();
+      go(current - 1);
+    }
+    if (event.key.toLowerCase() === 'i') openIndex();
   });
 
   document.addEventListener('wheel', (event) => {
-    if (indexPanel?.classList.contains('is-open') || locked) return;
-    wheel += event.deltaY + event.deltaX;
-    if (Math.abs(wheel) > 120) {
-      go(current + (wheel > 0 ? 1 : -1));
-      wheel = 0;
-    }
+    if (indexPanel?.open || Date.now() - lastNavigationAt < transitionMs() || event.ctrlKey) return;
+    window.clearTimeout(wheelTimer);
+    wheelDelta += event.deltaY + event.deltaX;
+    if (Math.abs(wheelDelta) >= 100) go(current + (wheelDelta > 0 ? 1 : -1));
+    wheelTimer = window.setTimeout(() => { wheelDelta = 0; }, 180);
   }, { passive: true });
 
-  let touchStart = null;
-  document.addEventListener('touchstart', (event) => { touchStart = event.changedTouches[0]?.clientX ?? null; }, { passive: true });
+  document.addEventListener('touchstart', (event) => {
+    const touch = event.changedTouches[0];
+    touchStart = touch ? { x: touch.clientX, y: touch.clientY } : null;
+  }, { passive: true });
+
   document.addEventListener('touchend', (event) => {
-    if (touchStart === null) return;
-    const end = event.changedTouches[0]?.clientX ?? touchStart;
-    const delta = end - touchStart;
-    if (Math.abs(delta) > 50) go(current + (delta < 0 ? 1 : -1));
+    const touch = event.changedTouches[0];
+    if (!touchStart || !touch) return;
+    const deltaX = touch.clientX - touchStart.x;
+    const deltaY = touch.clientY - touchStart.y;
+    if (Math.abs(deltaX) > 50 && Math.abs(deltaX) > Math.abs(deltaY)) go(current + (deltaX < 0 ? 1 : -1));
     touchStart = null;
   }, { passive: true });
+
+  updateStatus();
 </script>
