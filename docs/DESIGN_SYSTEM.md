@@ -16,10 +16,9 @@ The site should not resemble a gallery brochure. The interface itself is the exh
 
 ## Typography
 
-Three voices:
+Two voices:
 
-- serif for identity, work titles, and prose
-- sans-serif for practical interface copy
+- serif for identity, work titles, prose, and practical copy
 - monospace for status, dates, routes, and system evidence
 
 No font files are committed in the initial state. The stack uses high-quality system fallbacks so the repo works immediately. A licensed or self-hosted typeface can be selected later.

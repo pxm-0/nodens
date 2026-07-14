@@ -22,7 +22,7 @@ nodens.dev
 git clone <repository-url>
 cd nodens
 cp .env.example .env
-# Set the real public contact values.
+# Override the public contact values if needed.
 docker compose up --build -d
 ```
 
@@ -37,7 +37,6 @@ docker compose up --build -d
 
 ## Production checklist
 
-- replace the placeholder contact email
 - add real media under `public/media/`
 - confirm DNS and TLS
 - set security headers at the edge or reverse proxy
