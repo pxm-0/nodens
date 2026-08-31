@@ -20,7 +20,7 @@ Behind the exhibition, every facet has a proper public section with projects, es
 
 ## Stack
 
-- Astro 7
+- Astro 7.2.9
 - TypeScript
 - Markdown content collections
 - vanilla CSS and browser JavaScript
@@ -30,8 +30,8 @@ Behind the exhibition, every facet has a proper public section with projects, es
 
 Requirements:
 
-- Node.js 22.12 or newer
-- npm 9.6.5 or newer
+- Node.js 22.19.0
+- npm 11.12.1
 
 ```bash
 npm install
@@ -56,7 +56,12 @@ The generated static site is written to `dist/`.
 docker compose up --build -d
 ```
 
-The site will be available on `http://localhost:8080`.
+The local container is loopback-only at `http://127.0.0.1:8082`.
+
+Production never builds from a server checkout. GitHub Actions publishes an immutable
+`ghcr.io/pxm-0/nodens@sha256:...` image and the server deploys that exact digest.
+See [the deployment guide](docs/DEPLOYMENT.md) and
+[the production runbook](docs/PRODUCTION_RUNBOOK.md).
 
 ## Content model
 
@@ -91,9 +96,9 @@ Schemas are defined in `src/content.config.ts`. Draft entries are excluded from 
 
 ## Deployment intent
 
-Nodens is designed to build into static files and run cheaply on owned infrastructure. The included container builds the Astro site and serves it through nginx. A reverse proxy on Oreo Cloud can route `nodens.dev` to the container.
+Nodens is designed to build into static files and run cheaply on owned infrastructure. The included container serves an immutable build through nginx. A host-managed Cloudflare Tunnel routes `nodens.dev` to the loopback-only container.
 
-See `docs/DEPLOYMENT.md` for the intended first production path.
+See `docs/DEPLOYMENT.md` for the production path.
 
 ## Rights
 
