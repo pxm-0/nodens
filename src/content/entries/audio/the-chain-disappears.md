@@ -1,6 +1,5 @@
 ---
 title: When the Chain Disappears
-slug: the-chain-disappears
 description: A listening note on the point where hardware stops presenting itself as the subject.
 section: audio
 kind: note

@@ -4,10 +4,10 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import SiteFooter from '../../components/SiteFooter.astro';
 import EntryList from '../../components/EntryList.astro';
 import ProjectCard from '../../components/ProjectCard.astro';
-import { sortEntries } from '../../lib/content';
+import { sortEntries, sortProjects } from '../../lib/content';
 
 const entries = sortEntries(await getCollection('entries', ({ data }) => !data.draft));
-const projects = await getCollection('projects');
+const projects = sortProjects(await getCollection('projects'));
 ---
 <BaseLayout title="Index" description="A direct index of Nodens.">
   <main class="page-shell" id="main">

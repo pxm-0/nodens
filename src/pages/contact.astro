@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SiteFooter from '../components/SiteFooter.astro';
+import ExternalLink from '../components/ExternalLink.astro';
 const email = import.meta.env.PUBLIC_CONTACT_EMAIL ?? 'dustin@nodens.dev';
 const github = import.meta.env.PUBLIC_GITHUB_URL ?? 'https://github.com/pxm-0';
 ---
@@ -15,7 +16,7 @@ const github = import.meta.env.PUBLIC_GITHUB_URL ?? 'https://github.com/pxm-0';
         <p>For work, collaboration, correspondence, or a conversation with enough substance to justify the bandwidth.</p>
         <ul class="formal-list">
           <li><a href={`mailto:${email}`}>Email · {email}</a></li>
-          <li><a href={github}>GitHub · pxm-0 ↗</a></li>
+          <li><ExternalLink href={github} label="GitHub · pxm-0" /></li>
         </ul>
       </div>
     </div>

@@ -18,6 +18,7 @@ Optional behavior:
 - `featured`
 - `draft`
 - `tags`
+- `relatedProjects`: project IDs resolved with Astro content references
 
 This unified model permits a global index while each facet retains its own archive.
 
@@ -29,12 +30,22 @@ Important fields:
 
 - `status`
 - `phase`
+- `stageLabel`
+- `featureRank`
+- `recordState`
 - `summary`
 - `caveat`
 - `stack`
-- `links`
+- `links`: typed verified `live`, `portfolio`, or `source` URLs
 
-A project caveat is not a disclaimer buried at the bottom. It is part of the public record. Locigraph can be Phase IV of VI while still lacking proper authentication and deployment readiness.
+A project caveat is not a disclaimer buried at the bottom. It is part of the public record. LociGraph can be in Phase IV while still lacking proper authentication and deployment readiness.
+
+The content filename is the canonical project ID. Entry filenames are likewise the
+canonical IDs within their section; do not add manual `slug` fields.
+
+`recordState: maintenance` keeps an internal project record reachable but sends
+`noindex,follow` and shows only verified destinations. A record must explicitly move
+to `published` before it exposes its full content or becomes indexable.
 
 ## Future collections
 

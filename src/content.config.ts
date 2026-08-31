@@ -1,4 +1,4 @@
-import { defineCollection } from 'astro:content';
+import { defineCollection, reference } from 'astro:content';
 import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
 
@@ -14,6 +14,7 @@ const entries = defineCollection({
     featured: z.boolean().default(false),
     draft: z.boolean().default(false),
     tags: z.array(z.string()).default([]),
+    relatedProjects: z.array(reference('projects')).default([]),
   }),
 });
 
@@ -25,15 +26,17 @@ const projects = defineCollection({
     status: z.enum(['concept', 'active', 'paused', 'archived']),
     phase: z.string().optional(),
     year: z.string(),
-    featured: z.boolean().default(false),
+    stageLabel: z.string(),
+    featureRank: z.number().int().positive().optional(),
+    recordState: z.enum(['maintenance', 'published']).default('maintenance'),
     summary: z.string(),
     caveat: z.string().optional(),
     stack: z.array(z.string()).default([]),
     links: z
       .array(
         z.object({
-          label: z.string(),
-          href: z.string(),
+          kind: z.enum(['live', 'portfolio', 'source']),
+          href: z.url(),
         }),
       )
       .default([]),

@@ -1,6 +1,5 @@
 ---
 title: Locigraph at Phase IV
-slug: locigraph-phase-four
 description: The system has reached its fourth of six planned development phases, without pretending that core progress equals production readiness.
 section: engineering
 kind: log
@@ -8,6 +7,7 @@ publishedAt: 2026-07-11
 featured: true
 draft: false
 tags: [locigraph, architecture, status]
+relatedProjects: [locigraph]
 ---
 
 Locigraph is in **Phase IV of VI**.

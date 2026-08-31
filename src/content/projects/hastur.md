@@ -1,10 +1,11 @@
 ---
 title: Hastur
 subtitle: A watcher for jobs, signals, and scheduled systems.
-status: concept
-phase: Early system definition
+status: archived
+phase: Private early build
 year: 2026–
-featured: false
+stageLabel: Archive / Private early build
+recordState: maintenance
 summary: A personal watcher and cron surface for monitoring recurring work, system events, and conditions that deserve attention.
 caveat: Scope and production boundaries are still being defined.
 stack:

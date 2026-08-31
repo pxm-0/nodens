@@ -1,6 +1,5 @@
 ---
 title: The Coronation of Ruin
-slug: the-coronation-of-ruin
 description: A fragment about making ceremony out of collapse.
 section: writing
 kind: fragment

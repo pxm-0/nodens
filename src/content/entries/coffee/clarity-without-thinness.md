@@ -1,6 +1,5 @@
 ---
 title: Clarity Without Thinness
-slug: clarity-without-thinness
 description: A first V60 record built around a 14.6 gram dose and the difference between quiet flavor and absent flavor.
 section: coffee
 kind: log

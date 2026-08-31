@@ -1,6 +1,5 @@
 ---
 title: From Vision to Project
-slug: from-vision-to-project
 description: Oreo Cloud exists to shorten the distance between a system imagined and a system running.
 section: engineering
 kind: note
@@ -8,6 +7,7 @@ publishedAt: 2026-07-10
 featured: true
 draft: false
 tags: [oreo-cloud, infrastructure, deployment]
+relatedProjects: [oreo-cloud]
 ---
 
 Most personal projects do not fail at the idea. They disappear in the distance between architecture and operation.

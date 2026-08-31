@@ -1,6 +1,5 @@
 ---
 title: On Systems That Disappear When Correct
-slug: systems-that-disappear
 description: A short note on instruments, rituals, and structures that become invisible through precision.
 section: writing
 kind: essay
