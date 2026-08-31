@@ -6,7 +6,7 @@ phase: Infrastructure umbrella
 year: 2026–
 stageLabel: Archive / Infrastructure umbrella
 recordState: maintenance
-summary: A self-hosted miniature cloud intended to turn project concepts into repeatable, observable deployments on owned hardware.
+summary: Owned infrastructure for turning project designs into repeatable, observable deployments.
 caveat: The system is a direction and an active build, not a finished cloud platform.
 stack:
   - Linux

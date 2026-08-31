@@ -6,7 +6,7 @@ phase: Private early build
 year: 2026–
 stageLabel: Archive / Private early build
 recordState: maintenance
-summary: A personal watcher and cron surface for monitoring recurring work, system events, and conditions that deserve attention.
+summary: Private watcher for recurring work, system events, and conditions that deserve attention.
 caveat: Scope and production boundaries are still being defined.
 stack:
   - Event scheduling

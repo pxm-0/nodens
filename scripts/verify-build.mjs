@@ -135,8 +135,12 @@ if (sitemap.includes('/engineering/projects/')) fail('sitemap includes a mainten
 if (sitemap.includes('/404')) fail('sitemap includes the 404 route');
 
 for (const file of htmlFiles.filter((candidate) => relative(dist, candidate).startsWith('engineering/projects/'))) {
-  if (!hasMeta(readFileSync(file, 'utf8'), 'name', 'robots') || !/name="robots" content="noindex,follow"/i.test(readFileSync(file, 'utf8'))) {
+  const html = readFileSync(file, 'utf8');
+  if (!hasMeta(html, 'name', 'robots') || !/name="robots" content="noindex,follow"/i.test(html)) {
     fail(relative(dist, file) + ' is not noindex,follow');
+  }
+  if (!html.includes('<h1>Server migration in progress.</h1>') || !html.includes('Verified destinations remain available below.')) {
+    fail(relative(dist, file) + ' is missing the maintenance copy');
   }
 }
 

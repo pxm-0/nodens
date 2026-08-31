@@ -7,7 +7,7 @@ year: 2025–
 stageLabel: Active / Phase IV
 featureRank: 1
 recordState: maintenance
-summary: A personal knowledge architecture organized around observations, claims, concepts, revision, contradiction, and spatial retrieval.
+summary: Concept-centric memory architecture for evidence-bound claims, contradictions, revisions, and spatial retrieval.
 caveat: Core development is active. Authentication, deployment readiness, and production hardening are not complete.
 stack:
   - TypeScript

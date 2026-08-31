@@ -30,14 +30,14 @@ const isMaintenance = project.data.recordState === 'maintenance';
     <article class="article">
       <header class="article-header">
         <p class="eyebrow">Project record / {project.data.title}</p>
-        <h1>{project.data.title}</h1>
         {isMaintenance ? (
           <>
-            <p class="dek">Server migration in progress.</p>
+            <h1>Server migration in progress.</h1>
             <p class="dek">The public Nodens record for {project.data.title} is temporarily unavailable while the site’s project surfaces move to the new server. Its current public stage is {project.data.stageLabel}. Verified destinations remain available below.</p>
           </>
         ) : (
           <>
+            <h1>{project.data.title}</h1>
             <p class="dek">{project.data.subtitle}</p>
             {project.data.caveat && <p class="dek caveat">{project.data.caveat}</p>}
           </>
