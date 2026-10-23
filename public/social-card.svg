@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title description">
+  <title id="title">Nodens — Evidence of an ongoing life.</title>
+  <desc id="description">A dark green field with a quiet network diagram and the Nodens title.</desc>
+  <rect width="1200" height="630" fill="#132021"/>
+  <g fill="none" stroke="#bd695d" stroke-width="2" opacity=".72">
+    <path d="M770 90 930 178 1068 92M770 90l75 182 223-2M845 272l144 133 79-135M734 430l255-25 114 119M818 556l171-151 126 119"/>
+  </g>
+  <g fill="#e8e2d5">
+    <circle cx="770" cy="90" r="9"/><circle cx="930" cy="178" r="13"/><circle cx="1068" cy="92" r="8"/>
+    <circle cx="845" cy="272" r="8"/><circle cx="1068" cy="270" r="10"/><circle cx="989" cy="405" r="16"/>
+    <circle cx="734" cy="430" r="7"/><circle cx="1103" cy="524" r="9"/><circle cx="818" cy="556" r="8"/>
+  </g>
+  <text x="98" y="120" fill="#bd695d" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="700" letter-spacing="8">PUBLIC EDGE / 01</text>
+  <text x="94" y="256" fill="#e8e2d5" font-family="Georgia, serif" font-size="126" letter-spacing="-5">Nodens</text>
+  <line x1="98" y1="302" x2="602" y2="302" stroke="#e8e2d5" stroke-width="2" opacity=".5"/>
+  <text x="98" y="382" fill="#e8e2d5" font-family="Georgia, serif" font-size="54">Evidence of an</text>
+  <text x="98" y="447" fill="#bd695d" font-family="Georgia, serif" font-size="60" font-style="italic">ongoing life.</text>
+  <text x="98" y="550" fill="#aab5ad" font-family="Arial, Helvetica, sans-serif" font-size="22" letter-spacing="3">SYSTEMS · TEXTS · RITUALS · RECORDS</text>
+</svg>

@@ -1,0 +1,7 @@
+services:
+  nodens:
+    image: ${NODENS_IMAGE:?Set NODENS_IMAGE to an immutable ghcr.io/pxm-0/nodens digest}
+    container_name: nodens
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:8082:80"

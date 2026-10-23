@@ -1,46 +1,48 @@
 # Deployment
 
-## Intended first path
+## Production path
 
-Nodens is statically built and served from the user's own server.
+Nodens is built once in GitHub Actions, published to GHCR by commit SHA, and deployed
+to Oreo Cloud by immutable digest. The server does not clone this repository or build
+source.
 
-```text
-GitHub
-  ↓ pull or CI artifact
-Docker build
+~~~text
+GitHub CI
+  ↓ immutable ghcr.io/pxm-0/nodens@sha256:...
+GitHub production environment approval
   ↓
-nginx container :80
+restricted deploy credential over Tailscale
   ↓
-reverse proxy / TLS
+nginx container 127.0.0.1:8082
+  ↓
+host-managed cloudflared service
   ↓
 nodens.dev
-```
+~~~
 
-## First deployment
+## Local container
 
-```bash
-git clone <repository-url>
-cd nodens
-cp .env.example .env
-# Override the public contact values if needed.
+~~~bash
 docker compose up --build -d
-```
+~~~
 
-Route the domain through the server's existing reverse proxy to port `8081`.
+This is loopback-only on port 8082. It does not use or modify port 8081.
 
-## Updates
+## Production deployment
 
-```bash
-git pull --ff-only
-docker compose up --build -d
-```
+The Publish and deploy workflow runs only after a successful CI run on main. It
+publishes ghcr.io/pxm-0/nodens:<commit-sha>, captures the resulting digest, waits for
+the protected production environment approval, then copies only
+docker-compose.production.yml and scripts/deploy-image.sh to /opt/nodens/.
 
-## Production checklist
+The remote script validates the GHCR repository, records the prior digest, checks
+container health and local HTTP responses, and restores the prior digest on failure.
 
-- add real media under `public/media/`
-- confirm DNS and TLS
-- set security headers at the edge or reverse proxy
-- verify the health endpoint
-- test keyboard, touch, and reduced-motion navigation
-- run a Lighthouse pass
-- confirm that private drafts and personal records are not committed
+For a manual, immutable fallback:
+
+~~~bash
+NODENS_PUBLIC_URL=https://nodens.dev /opt/nodens/scripts/deploy-image.sh ghcr.io/pxm-0/nodens@sha256:<64-hex-digest>
+~~~
+
+The full administrator-owned setup and release verification are in
+[PRODUCTION_RUNBOOK.md](PRODUCTION_RUNBOOK.md).

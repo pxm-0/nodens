@@ -1,6 +1,5 @@
 ---
 title: Notes Toward Specificity
-slug: notes-toward-specificity
 description: Specificity as the point where preference stops being decoration and becomes structure.
 section: writing
 kind: note

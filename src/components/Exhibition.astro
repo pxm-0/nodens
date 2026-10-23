@@ -1,5 +1,15 @@
 ---
 import '../styles/exhibition.css';
+import { getCollection } from 'astro:content';
+import { entryHref, sortEntries, sortProjects } from '../lib/content';
+
+const [projects, writing] = await Promise.all([
+  getCollection('projects'),
+  getCollection('entries', ({ data }) => data.section === 'writing' && data.featured && !data.draft),
+]);
+const featuredProjects = sortProjects(projects).filter((project) => project.data.featureRank !== undefined).slice(0, 2);
+const featuredWriting = sortEntries(writing).slice(0, 3);
+const primaryProject = featuredProjects[0];
 ---
 
 <section class="exhibition-shell" aria-label="Nodens public exhibition">
@@ -28,20 +38,15 @@ import '../styles/exhibition.css';
           <h2 class="display engineer-title">Systems made<br />to <em>persist.</em></h2>
           <p class="engineer-lede">Software, infrastructure, and the long route from an idea to something that survives contact with reality.</p>
           <div class="project-stack">
-            <article class="project-slip">
-              <p class="phase-tag"><b>Phase IV / VI</b>Active</p>
-              <div>
-                <h3>Locigraph</h3>
-                <p>A claim graph built for revision, contradiction, and spatial retrieval.</p>
-              </div>
-            </article>
-            <article class="project-slip">
-              <p class="phase-tag"><b>Vision → Project</b>Active</p>
-              <div>
-                <h3>Oreo Cloud</h3>
-                <p>Owned infrastructure that turns system designs into observable deployments.</p>
-              </div>
-            </article>
+            {featuredProjects.map((project) => (
+              <article class="project-slip">
+                <p class="phase-tag"><b>{project.data.stageLabel}</b>{project.data.status}</p>
+                <div>
+                  <h3>{project.data.title}</h3>
+                  <p>{project.data.summary}</p>
+                </div>
+              </article>
+            ))}
           </div>
           <a class="frame-link engineer-enter" href="/engineering/">Enter engineering <span aria-hidden="true">↗</span></a>
         </div>
@@ -59,7 +64,7 @@ import '../styles/exhibition.css';
             <circle cx="650" cy="620" r="8" /><circle cx="160" cy="675" r="7" />
           </svg>
           <figcaption class="system-state">
-            <p>Locigraph / Phase 04</p>
+            <p>{primaryProject ? `${primaryProject.data.title} / ${primaryProject.data.stageLabel}` : 'Engineering / active'}</p>
             <dl>
               <div><dt>Claim graph</dt><dd>Ready</dd></div>
               <div><dt>Revision</dt><dd>Active</dd></div>
@@ -77,9 +82,9 @@ import '../styles/exhibition.css';
         <h2 class="display writer-title">Language as<br /><em>instrument.</em></h2>
         <blockquote class="writer-excerpt">“The things most correct for me survive by disappearing <em>into place.</em>”</blockquote>
         <ol class="writer-list">
-          <li><a href="/writing/the-coronation-of-ruin/"><small>Fragment · 2026</small><span>The Coronation of Ruin</span></a></li>
-          <li><a href="/writing/systems-that-disappear/"><small>Fragment · 2026</small><span>On Systems That Disappear When Correct</span></a></li>
-          <li><a href="/writing/notes-toward-specificity/"><small>Note · 2026</small><span>Notes Toward Specificity</span></a></li>
+          {featuredWriting.map((entry) => (
+            <li><a href={entryHref(entry)}><small>{entry.data.kind} · {entry.data.publishedAt.getFullYear()}</small><span>{entry.data.title}</span></a></li>
+          ))}
         </ol>
         <a class="frame-link writer-enter" href="/writing/">Enter writing <span aria-hidden="true">↗</span></a>
       </div>
@@ -166,170 +171,4 @@ import '../styles/exhibition.css';
   </dialog>
 </section>
 
-<script>
-  const frames = Array.from(document.querySelectorAll<HTMLElement>('.exhibition-frame'));
-  const previous = document.querySelector<HTMLButtonElement>('#previousFrame');
-  const next = document.querySelector<HTMLButtonElement>('#nextFrame');
-  const currentLabel = document.querySelector<HTMLElement>('#frameNumber');
-  const totalLabel = document.querySelector<HTMLElement>('#frameTotal');
-  const frameStatus = document.querySelector<HTMLElement>('#frameStatus');
-  const indexToggle = document.querySelector<HTMLButtonElement>('#indexToggle');
-  const indexPanel = document.querySelector<HTMLDialogElement>('#exhibitionIndex');
-  const indexClose = document.querySelector<HTMLButtonElement>('#indexClose');
-  const indexList = document.querySelector<HTMLOListElement>('#frameIndex');
-  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-  const indexButtons: HTMLButtonElement[] = [];
-  let current = 0;
-  let lastNavigationAt = 0;
-  let wheelDelta = 0;
-  let wheelTimer: number | undefined;
-  let touchStart: { x: number; y: number } | null = null;
-
-  const transitionMs = () => prefersReducedMotion.matches ? 20 : 760;
-  const titleFor = (frame: HTMLElement) => frame.dataset.title || 'Untitled';
-  const toneFor = (frame: HTMLElement) => frame.dataset.tone || 'light';
-
-  function setChromeTone(frame: HTMLElement) {
-    document.body.dataset.exhibitionTone = toneFor(frame);
-  }
-
-  function updateIndexState() {
-    indexButtons.forEach((button, index) => {
-      if (index === current) button.setAttribute('aria-current', 'step');
-      else button.removeAttribute('aria-current');
-    });
-  }
-
-  function updateStatus() {
-    const frame = frames[current];
-    if (!frame) return;
-    if (currentLabel) currentLabel.textContent = String(current + 1).padStart(2, '0');
-    if (frameStatus) frameStatus.textContent = `Frame ${current + 1} of ${frames.length}: ${titleFor(frame)}`;
-    setChromeTone(frame);
-    updateIndexState();
-  }
-
-  if (totalLabel) totalLabel.textContent = String(frames.length).padStart(2, '0');
-
-  frames.forEach((frame, index) => {
-    const isActive = index === current;
-    frame.inert = !isActive;
-    frame.setAttribute('aria-hidden', String(!isActive));
-
-    const item = document.createElement('li');
-    const button = document.createElement('button');
-    const route = frame.dataset.route || '/';
-    const title = titleFor(frame);
-    button.type = 'button';
-    button.setAttribute('aria-label', `Go to frame ${index + 1}: ${title}`);
-    button.innerHTML = `<small>${String(index + 1).padStart(2, '0')}</small><strong>${title}</strong><span>${route}</span>`;
-    button.addEventListener('click', () => {
-      go(index);
-      closeIndex();
-    });
-    item.append(button);
-    indexList?.append(item);
-    indexButtons.push(button);
-  });
-
-  function go(target: number) {
-    const normalized = (target + frames.length) % frames.length;
-    const now = Date.now();
-    if (now - lastNavigationAt < transitionMs() || normalized === current) return;
-
-    lastNavigationAt = now;
-    const outgoing = frames[current];
-    const incoming = frames[normalized];
-    if (!outgoing || !incoming) return;
-
-    outgoing.classList.add('is-leaving');
-    outgoing.classList.remove('is-active');
-    outgoing.inert = true;
-    outgoing.setAttribute('aria-hidden', 'true');
-
-    incoming.inert = false;
-    incoming.setAttribute('aria-hidden', 'false');
-    incoming.classList.add('is-active');
-    current = normalized;
-    wheelDelta = 0;
-    updateStatus();
-
-    window.setTimeout(() => {
-      outgoing.classList.remove('is-leaving');
-    }, transitionMs());
-  }
-
-  function openIndex() {
-    if (!indexPanel || indexPanel.open) return;
-    document.body.classList.add('index-open');
-    indexPanel.showModal();
-    window.requestAnimationFrame(() => indexPanel.classList.add('is-open'));
-    indexToggle?.setAttribute('aria-expanded', 'true');
-    indexClose?.focus();
-  }
-
-  function closeIndex() {
-    if (!indexPanel?.open) return;
-    indexPanel.classList.remove('is-open');
-    indexToggle?.setAttribute('aria-expanded', 'false');
-    document.body.classList.remove('index-open');
-    setChromeTone(frames[current]);
-    window.setTimeout(() => {
-      if (indexPanel.open) indexPanel.close();
-      indexToggle?.focus();
-    }, prefersReducedMotion.matches ? 0 : 260);
-  }
-
-  previous?.addEventListener('click', () => go(current - 1));
-  next?.addEventListener('click', () => go(current + 1));
-  indexToggle?.addEventListener('click', openIndex);
-  indexClose?.addEventListener('click', closeIndex);
-  indexPanel?.addEventListener('cancel', (event) => {
-    event.preventDefault();
-    closeIndex();
-  });
-  document.querySelectorAll<HTMLElement>('[data-next]').forEach((item) => item.addEventListener('click', () => go(current + 1)));
-
-  document.addEventListener('keydown', (event) => {
-    if (indexPanel?.open) {
-      if (event.key === 'Escape') {
-        event.preventDefault();
-        closeIndex();
-      }
-      return;
-    }
-    if (['ArrowRight', 'ArrowDown', 'PageDown', ' '].includes(event.key)) {
-      event.preventDefault();
-      go(current + 1);
-    }
-    if (['ArrowLeft', 'ArrowUp', 'PageUp'].includes(event.key)) {
-      event.preventDefault();
-      go(current - 1);
-    }
-    if (event.key.toLowerCase() === 'i') openIndex();
-  });
-
-  document.addEventListener('wheel', (event) => {
-    if (indexPanel?.open || Date.now() - lastNavigationAt < transitionMs() || event.ctrlKey) return;
-    window.clearTimeout(wheelTimer);
-    wheelDelta += event.deltaY + event.deltaX;
-    if (Math.abs(wheelDelta) >= 100) go(current + (wheelDelta > 0 ? 1 : -1));
-    wheelTimer = window.setTimeout(() => { wheelDelta = 0; }, 180);
-  }, { passive: true });
-
-  document.addEventListener('touchstart', (event) => {
-    const touch = event.changedTouches[0];
-    touchStart = touch ? { x: touch.clientX, y: touch.clientY } : null;
-  }, { passive: true });
-
-  document.addEventListener('touchend', (event) => {
-    const touch = event.changedTouches[0];
-    if (!touchStart || !touch) return;
-    const deltaX = touch.clientX - touchStart.x;
-    const deltaY = touch.clientY - touchStart.y;
-    if (Math.abs(deltaX) > 50 && Math.abs(deltaX) > Math.abs(deltaY)) go(current + (deltaX < 0 ? 1 : -1));
-    touchStart = null;
-  }, { passive: true });
-
-  updateStatus();
-</script>
+<script src="../scripts/exhibition.ts"></script>

@@ -1,18 +1,22 @@
 ---
-title: Locigraph
+title: LociGraph
 subtitle: A concept-centric personal knowledge system.
 status: active
 phase: Phase IV / VI
 year: 2025–
-featured: true
-summary: A personal knowledge architecture organized around observations, claims, concepts, revision, contradiction, and spatial retrieval.
+stageLabel: Active / Phase IV
+featureRank: 1
+recordState: maintenance
+summary: Concept-centric memory architecture for evidence-bound claims, contradictions, revisions, and spatial retrieval.
 caveat: Core development is active. Authentication, deployment readiness, and production hardening are not complete.
 stack:
   - TypeScript
   - Python
   - PostgreSQL
   - Docker
-links: []
+links:
+  - kind: source
+    href: https://github.com/pxm-0/LociGraph-Rebuild
 ---
 
 Locigraph begins from a dissatisfaction with note systems that preserve where a thought was stored while losing what the thought later became.

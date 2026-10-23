@@ -8,15 +8,54 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  build:
-    runs-on: ubuntu-latest
+  validate:
+    runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
-          node-version: 22.12.0
+          node-version: 22.19.0
           cache: npm
-      - run: npm install --global npm@11
+      - run: npm install --global npm@11.12.1
+      - run: test "$(npm --version)" = "11.12.1"
       - run: npm ci
+      - run: npm run check
+      - run: npm run audit
       - run: npm run build
+      - run: npm run verify
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:e2e
+      - run: npm run test:lighthouse
+
+  container:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - run: docker build --tag nodens:ci .
+      - uses: aquasecurity/trivy-action@57a97c7e7821a5776cebc9bb87c984fa69cba8f1 # v0.35.0
+        with:
+          image-ref: nodens:ci
+          format: table
+          exit-code: '1'
+          ignore-unfixed: true
+          severity: HIGH,CRITICAL
+          vuln-type: os,library
+      - run: docker run --detach --name nodens-ci --publish 127.0.0.1:8082:80 nodens:ci
+      - name: Verify container health, routes, and headers
+        run: |
+          for attempt in {1..30}; do
+            curl --fail --silent --show-error http://127.0.0.1:8082/healthz && break
+            sleep 1
+          done
+          curl --fail --silent --show-error http://127.0.0.1:8082/
+          test "$(curl --silent --output "$RUNNER_TEMP/nodens-404.html" --write-out '%{http_code}' http://127.0.0.1:8082/unlisted-room)" = 404
+          grep --quiet 'Nothing is exhibited here.' "$RUNNER_TEMP/nodens-404.html"
+          curl --fail --silent --show-error --head http://127.0.0.1:8082/ | grep --ignore-case --quiet '^content-security-policy:'
+          curl --fail --silent --show-error --head http://127.0.0.1:8082/healthz | grep --ignore-case --quiet '^cache-control: no-store'
+      - if: always()
+        run: docker rm --force nodens-ci || true

@@ -1,11 +1,12 @@
 ---
 title: Oreo Cloud
 subtitle: A personal infrastructure layer from vision to projects.
-status: active
-phase: Architecture bridge
+status: archived
+phase: Infrastructure umbrella
 year: 2026–
-featured: true
-summary: A self-hosted miniature cloud intended to turn project concepts into repeatable, observable deployments on owned hardware.
+stageLabel: Archive / Infrastructure umbrella
+recordState: maintenance
+summary: Owned infrastructure for turning project designs into repeatable, observable deployments.
 caveat: The system is a direction and an active build, not a finished cloud platform.
 stack:
   - Linux

@@ -35,8 +35,22 @@ export function sortEntries(entries: CollectionEntry<'entries'>[]) {
   );
 }
 
+export function sortProjects(projects: CollectionEntry<'projects'>[]) {
+  return [...projects].sort(
+    (a, b) =>
+      (a.data.featureRank ?? Number.POSITIVE_INFINITY) -
+        (b.data.featureRank ?? Number.POSITIVE_INFINITY) ||
+      a.data.title.localeCompare(b.data.title),
+  );
+}
+
 export function entryHref(entry: CollectionEntry<'entries'>) {
-  return `/${entry.data.section}/${entry.id}/`;
+  return `/${entry.data.section}/${entryRouteId(entry)}/`;
+}
+
+export function entryRouteId(entry: CollectionEntry<'entries'>) {
+  const prefix = `${entry.data.section}/`;
+  return entry.id.startsWith(prefix) ? entry.id.slice(prefix.length) : entry.id;
 }
 
 export function projectHref(project: CollectionEntry<'projects'>) {
