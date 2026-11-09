@@ -59,7 +59,7 @@ docker compose up --build -d
 The local container is loopback-only at `http://127.0.0.1:8082`.
 
 Production never builds from a server checkout. GitHub Actions publishes an immutable
-`ghcr.io/pxm-0/nodens@sha256:...` image and the server deploys that exact digest.
+`ghcr.io/pxm-0/nodens@sha256:...` image; Argus deploys that exact digest.
 See [the deployment guide](docs/DEPLOYMENT.md) and
 [the production runbook](docs/PRODUCTION_RUNBOOK.md).
 
