@@ -1,4 +1,4 @@
-name: Publish and deploy
+name: Publish image
 
 on:
   workflow_run:
@@ -16,10 +16,9 @@ concurrency:
 
 jobs:
   publish:
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    # Only same-repo pushes to main; a fork PR whose branch is named main also matches `branches`.
+    if: ${{ github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'push' && github.event.workflow_run.head_branch == 'main' && github.event.workflow_run.head_repository.full_name == github.repository }}
     runs-on: ubuntu-24.04
-    outputs:
-      digest: ${{ steps.build.outputs.digest }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -29,6 +28,8 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+      # provenance attestations need a docker-container builder; the default docker driver rejects them
+      - uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # v4.4.1
       - id: build
         uses: docker/build-push-action@53b7df96c91f9c12dcc8a07bcb9ccacbed38856a # v7.3.0
         with:
@@ -39,38 +40,17 @@ jobs:
           labels: |
             org.opencontainers.image.source=${{ github.server_url }}/${{ github.repository }}
             org.opencontainers.image.revision=${{ github.event.workflow_run.head_sha }}
-      - run: echo "image=ghcr.io/pxm-0/nodens@${{ steps.build.outputs.digest }}"
-
-  deploy:
-    needs: publish
-    runs-on: ubuntu-24.04
-    environment: production
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          ref: ${{ github.event.workflow_run.head_sha }}
-      - uses: tailscale/github-action@780049a30b6ff5c378a9e7b389d15ece7a204888 # v4.1.3
-        with:
-          oauth-client-id: ${{ secrets.TAILSCALE_OAUTH_CLIENT_ID }}
-          oauth-secret: ${{ secrets.TAILSCALE_OAUTH_SECRET }}
-          tags: tag:ci
-      - name: Install deployment assets and deploy the immutable digest
+      - name: Record immutable image reference
         env:
-          DEPLOY_TARGET: ${{ secrets.NODENS_DEPLOY_TARGET }}
-          DEPLOY_KEY: ${{ secrets.NODENS_DEPLOY_KEY }}
-          DEPLOY_KNOWN_HOSTS: ${{ secrets.NODENS_DEPLOY_KNOWN_HOSTS }}
-          IMAGE: ghcr.io/pxm-0/nodens@${{ needs.publish.outputs.digest }}
-          PUBLIC_URL: ${{ vars.NODENS_PUBLIC_URL }}
+          DIGEST: ${{ steps.build.outputs.digest }}
+          SHA: ${{ github.event.workflow_run.head_sha }}
         run: |
-          if [[ -n "$PUBLIC_URL" && ! "$PUBLIC_URL" =~ ^https://[A-Za-z0-9.-]+/?$ ]]; then
-            echo "NODENS_PUBLIC_URL must be a bare HTTPS origin" >&2
-            exit 1
-          fi
-          install --directory --mode 700 "$RUNNER_TEMP/nodens-ssh"
-          printf '%s\n' "$DEPLOY_KEY" > "$RUNNER_TEMP/nodens-ssh/id_ed25519"
-          printf '%s\n' "$DEPLOY_KNOWN_HOSTS" > "$RUNNER_TEMP/nodens-ssh/known_hosts"
-          chmod 600 "$RUNNER_TEMP/nodens-ssh/id_ed25519"
-          ssh -i "$RUNNER_TEMP/nodens-ssh/id_ed25519" -o StrictHostKeyChecking=yes -o UserKnownHostsFile="$RUNNER_TEMP/nodens-ssh/known_hosts" "$DEPLOY_TARGET" 'install --directory --mode 755 /opt/nodens/scripts'
-          scp -i "$RUNNER_TEMP/nodens-ssh/id_ed25519" -o StrictHostKeyChecking=yes -o UserKnownHostsFile="$RUNNER_TEMP/nodens-ssh/known_hosts" docker-compose.production.yml "$DEPLOY_TARGET:/opt/nodens/"
-          scp -i "$RUNNER_TEMP/nodens-ssh/id_ed25519" -o StrictHostKeyChecking=yes -o UserKnownHostsFile="$RUNNER_TEMP/nodens-ssh/known_hosts" scripts/deploy-image.sh "$DEPLOY_TARGET:/opt/nodens/scripts/"
-          ssh -i "$RUNNER_TEMP/nodens-ssh/id_ed25519" -o StrictHostKeyChecking=yes -o UserKnownHostsFile="$RUNNER_TEMP/nodens-ssh/known_hosts" "$DEPLOY_TARGET" "chmod 755 /opt/nodens/scripts/deploy-image.sh && NODENS_PUBLIC_URL='$PUBLIC_URL' /opt/nodens/scripts/deploy-image.sh '$IMAGE'"
+          test -n "$DIGEST"
+          {
+            echo "### Published image"
+            echo
+            echo "- Image: \`ghcr.io/pxm-0/nodens@${DIGEST}\`"
+            echo "- Commit: \`${SHA}\`"
+            echo "- Tags: \`ghcr.io/pxm-0/nodens:${SHA}\`"
+          } >> "$GITHUB_STEP_SUMMARY"
+          echo "image=ghcr.io/pxm-0/nodens@${DIGEST}"

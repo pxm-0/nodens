@@ -5,22 +5,15 @@
 - Protect main: require pull requests and the validate and container checks, require
   branches to be up to date, enforce for administrators, disable force pushes and
   deletion, and set required approvals to zero for the solo-owner workflow.
-- Create the production environment with Dustin Aceveda as the required reviewer and
-  self-review enabled.
 - Make the ghcr.io/pxm-0/nodens package public after its first publish. The static
   image contains no registry credential.
-- Add only these environment secrets: TAILSCALE_OAUTH_CLIENT_ID,
-  TAILSCALE_OAUTH_SECRET, NODENS_DEPLOY_TARGET, NODENS_DEPLOY_KEY, and
-  NODENS_DEPLOY_KNOWN_HOSTS. The target must be a restricted deploy account on the
-  private network.
-- Set the NODENS_PUBLIC_URL repository variable only after public DNS is live. Before
-  then, the deploy script deliberately validates the local origin only.
 
 ## 2. Configure the host
 
-Install Docker and place the deployment files at /opt/nodens/; no repository clone is
-needed. Run Cloudflare Tunnel as an independent host service, not as a Nodens
-container. Its ingress ends with the catch-all 404 rule:
+The host runs Nodens only as the Argus managed-zone workloads nodens-staging and
+nodens-production; no repository clone or deployment files are needed. Run
+Cloudflare Tunnel as an independent host service, not as a Nodens container. Its
+ingress ends with the catch-all 404 rule:
 
 ~~~yaml
 ingress:
@@ -45,11 +38,9 @@ must be enabled independently so container restarts cannot take down the tunnel.
 
 ## 4. Release and verify
 
-1. Merge a green PR. The production workflow builds, publishes, and records one
-   immutable image digest.
-2. Approve the protected deployment. The script deploys that digest only to
-   127.0.0.1:8082, then rolls back automatically if health, local HTTP, or the
-   configured public URL fails.
+1. Merge a green PR. The Publish image workflow builds, publishes, and records one
+   immutable image digest in its run summary.
+2. Open an Argus PR pinning that digest in nodens-staging, then nodens-production.
 3. Verify https://nodens.dev, the permanent www redirect, /healthz, security headers,
    custom 404, sitemap, robots, and the four featured destinations.
 4. Submit the sitemap using the existing verified search property. Confirm Google
