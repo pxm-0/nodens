@@ -53,6 +53,9 @@ docker compose run --rm --no-deps dev npm run test:lighthouse
 
 Editors with Dev Containers support can instead open the repository in the `dev`
 container (`.devcontainer/devcontainer.json`), which is the same compose service.
+That shell shares the running `astro dev` server's port 4321, so run `test:e2e` and
+`test:lighthouse` through `docker compose run --rm --no-deps dev ...` as above, not
+from the devcontainer shell: there they would test the dev server instead of `dist`.
 
 ## Production build
 
