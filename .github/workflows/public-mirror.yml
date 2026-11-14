@@ -1,0 +1,107 @@
+name: Public mirror
+
+# One-way publish of the allowlisted files (mirror/allowlist.txt) to the public
+# repository pxm-0/nodens-public as a single fresh commit. The public repository
+# builds its own image from those files (mirror/overlay/.github/workflows/image.yml).
+
+on:
+  pull_request:
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: public-mirror-${{ github.event_name == 'pull_request' && github.ref || 'publish' }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+env:
+  PUBLIC_REPOSITORY: pxm-0/nodens-public
+  SOURCE_SHA: ${{ github.event.workflow_run.head_sha || github.sha }}
+
+jobs:
+  verify:
+    # PRs only verify. Publishing needs a green CI run of a same-repo push to main, or a manual run on main.
+    if: >-
+      github.event_name == 'pull_request' ||
+      (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main') ||
+      (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success' &&
+       github.event.workflow_run.event == 'push' && github.event.workflow_run.head_branch == 'main' &&
+       github.event.workflow_run.head_repository.full_name == github.repository)
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ env.SOURCE_SHA }}
+      - name: Copy allowlisted files
+        run: mirror/build.sh "$RUNNER_TEMP/mirror"
+      - name: Leak scan (source)
+        run: mirror/scan.sh "$RUNNER_TEMP/mirror"
+      - name: Leak scan self-test (planted fake leaks must be blocked)
+        run: mirror/selftest.sh "$RUNNER_TEMP/mirror"
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 22.19.0
+      - name: Build the site from the mirror alone
+        run: |
+          cp -R "$RUNNER_TEMP/mirror" "$RUNNER_TEMP/site"
+          cd "$RUNNER_TEMP/site"
+          npm install --global npm@11.12.1
+          npm ci
+          npm run build
+      - name: Leak scan (built site)
+        run: mirror/scan.sh "$RUNNER_TEMP/site/dist"
+
+  publish:
+    # No npm or other third-party code runs in this job: it is the only one holding the deploy key.
+    needs: verify
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-24.04
+    environment: public-mirror
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ env.SOURCE_SHA }}
+      - name: Skip unless this commit is still the tip of main
+        id: tip
+        run: |
+          tip=$(git ls-remote origin refs/heads/main | cut -f1)
+          if [ "$tip" = "$SOURCE_SHA" ]; then
+            echo "current=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "Skipped: $SOURCE_SHA is no longer the tip of main ($tip)." >> "$GITHUB_STEP_SUMMARY"
+          fi
+      - name: Copy allowlisted files and scan again
+        if: steps.tip.outputs.current == 'true'
+        run: |
+          mirror/build.sh "$RUNNER_TEMP/mirror"
+          mirror/scan.sh "$RUNNER_TEMP/mirror"
+      - name: Check out public repository
+        if: steps.tip.outputs.current == 'true'
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: ${{ env.PUBLIC_REPOSITORY }}
+          ssh-key: ${{ secrets.PUBLIC_MIRROR_DEPLOY_KEY }}
+          path: public-repo
+      - name: Replace public repository with a single fresh commit
+        if: steps.tip.outputs.current == 'true'
+        working-directory: public-repo
+        run: |
+          git fetch --quiet --depth=1 origin main
+          git checkout --quiet --orphan publish
+          git rm -rfq .
+          cp -R "$RUNNER_TEMP/mirror/." .
+          git add -A
+          if [ "$(git write-tree)" = "$(git rev-parse 'FETCH_HEAD^{tree}')" ]; then
+            echo "Public mirror already matches; nothing to publish." >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          git -c user.name='github-actions[bot]' \
+            -c user.email='41898282+github-actions[bot]@users.noreply.github.com' \
+            commit --quiet -m "Publish public mirror"
+          git push --force origin HEAD:main
+          echo "Published \`$(git rev-parse HEAD)\` to ${PUBLIC_REPOSITORY}." >> "$GITHUB_STEP_SUMMARY"
