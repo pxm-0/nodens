@@ -26,20 +26,33 @@ Behind the exhibition, every facet has a proper public section with projects, es
 - vanilla CSS and browser JavaScript
 - static output served by nginx
 
-## Local development
+## Develop
 
-Requirements:
-
-- Node.js 22.19.0
-- npm 11.12.1
+Only Docker (OrbStack on macOS) is needed on the host. Node 22.19.0, npm 11.12.1 and
+Playwright's Chromium live in the dev image (`.devcontainer/Dockerfile`).
 
 ```bash
-npm install
-cp .env.example .env
-npm run dev
+docker compose up -d          # astro dev with hot reload at http://127.0.0.1:4321
+docker compose logs -f dev
+docker compose down           # stop; add -v to drop the dependency and build volumes
 ```
 
-Open `http://localhost:4321`.
+The source is bind-mounted, so edits reload the page. `node_modules`, `.astro` and
+`dist` live in named volumes and never reach the macOS host. The first start runs
+`npm ci`; later starts reinstall only when `package-lock.json` changes. No `.env` is
+needed: the `PUBLIC_*` variables in `.env.example` have built-in fallbacks.
+
+Run checks and tests in a one-off container beside the dev server:
+
+```bash
+docker compose run --rm --no-deps dev npm run check
+docker compose run --rm --no-deps dev npm test
+docker compose run --rm --no-deps dev npm run test:e2e
+docker compose run --rm --no-deps dev npm run test:lighthouse
+```
+
+Editors with Dev Containers support can instead open the repository in the `dev`
+container (`.devcontainer/devcontainer.json`), which is the same compose service.
 
 ## Production build
 
@@ -53,10 +66,19 @@ The generated static site is written to `dist/`.
 ## Docker
 
 ```bash
-docker compose up --build -d
+docker compose --profile image up --build -d nodens
+curl http://127.0.0.1:8083/healthz
+docker compose --profile image rm -sf nodens
 ```
 
-The local container is loopback-only at `http://127.0.0.1:8082`.
+This builds the production nginx image and serves it loopback-only on port 8083, so it
+never collides with the production workload's port 8082 (or 8081).
+
+The production rehearsal for issue #6 runs on the `oreochiserver-sim` OrbStack machine
+from the Argus repository, not from this repository. It uses the production compose
+and pulls the published `ghcr.io/pxm-0/nodens@sha256:...` image, so on the sim you log
+in yourself with a read-only GHCR token (`docker login ghcr.io`). No token is stored
+in either repository.
 
 Production never builds from a server checkout. GitHub Actions publishes an immutable
 `ghcr.io/pxm-0/nodens@sha256:...` image; Argus deploys that exact digest.
