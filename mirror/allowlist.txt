@@ -1,0 +1,23 @@
+# Tracked paths copied into the public mirror (pxm-0/nodens-public).
+# Anything not listed stays private. Every entry must match at least one tracked file.
+src/
+public/
+scripts/
+tests/
+astro.config.mjs
+package.json
+package-lock.json
+tsconfig.json
+playwright.config.ts
+Dockerfile
+nginx.conf
+.dockerignore
+.gitignore
+.nvmrc
+.editorconfig
+.env.example
+LICENSE
+CONTENT_LICENSE.md
+docs/CONTENT_MODEL.md
+docs/DESIGN_SYSTEM.md
+docs/PRODUCT.md

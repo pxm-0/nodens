@@ -24,3 +24,6 @@ Pin that reference in the Argus workload to deploy it.
 
 The full administrator-owned setup and release verification are in
 [PRODUCTION_RUNBOOK.md](PRODUCTION_RUNBOOK.md).
+
+A curated copy of this repository and its own image are published one way to
+`pxm-0/nodens-public`; see [PUBLIC_MIRROR.md](PUBLIC_MIRROR.md).

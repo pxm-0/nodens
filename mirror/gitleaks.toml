@@ -1,0 +1,55 @@
+# Leak rules for the public mirror. Default gitleaks secret rules plus the
+# Argus #319 disclosure rules. scan.sh runs with --max-decode-depth 3, so
+# base64, hex and percent-encoded forms are checked too. scan.sh also scans a
+# strings copy of every file as <path>.txt, so path rules allow a .txt suffix.
+title = "nodens public mirror"
+
+[extend]
+useDefault = true
+
+[[rules]]
+id = "secret-file"
+description = "Secret-bearing file (only .env.example may be public)"
+path = '''(^|/)(\.env(\.[^/]*)?|\.envrc|[^/]*\.env|\.npmrc|\.netrc|id_(rsa|dsa|ecdsa|ed25519)[^/]*|[^/]*\.(pem|key|p12|pfx|tfvars|kdbx))(\.txt)?$'''
+[[rules.allowlists]]
+paths = ['''(^|/)\.env\.example(\.txt)?$''']
+
+[[rules]]
+id = "internal-host"
+description = "Private server or tailnet hostname"
+regex = '''(?i)(oreochi[a-z0-9-]*|[a-z0-9-]+\.ts\.net\b)'''
+
+[[rules]]
+id = "tailnet-ip"
+description = "Tailscale CGNAT address (100.64.0.0/10)"
+regex = '''\b100\.(6[4-9]|[7-9][0-9]|1[01][0-9]|12[0-7])\.[0-9]{1,3}\.[0-9]{1,3}\b'''
+
+[[rules]]
+id = "private-ip"
+description = "RFC1918 address"
+regex = '''\b(10\.[0-9]{1,3}|192\.168|172\.(1[6-9]|2[0-9]|3[01]))\.[0-9]{1,3}\.[0-9]{1,3}\b'''
+
+[[rules]]
+id = "host-path"
+description = "Host filesystem path"
+regex = '''(?i)(/Users/|/home/|/root/|/srv/|/opt/|/mnt/|/etc/argus|/var/lib/argus|~/Code/|[a-z]:\\Users\\)[A-Za-z0-9._-]'''
+
+[[rules]]
+id = "internal-port"
+description = "Port of a server-side service"
+regex = '''\b(8081|8082)\b'''
+
+[[rules]]
+id = "port-url"
+description = "Host and port URL; only the local dev server port is public"
+regex = '''(?i)\b(localhost|127\.0\.0\.1|0\.0\.0\.0|[a-z0-9-]+(\.[a-z0-9-]+)+):[0-9]{2,5}\b'''
+[[rules.allowlists]]
+condition = "AND"
+regexTarget = "match"
+regexes = ['''^(localhost|127\.0\.0\.1):4321$''']
+paths = ['''(^|/)(playwright\.config\.ts|scripts/run-lighthouse\.mjs)(\.txt)?$''']
+
+[[rules]]
+id = "argus-internal-name"
+description = "Argus workload or trust-domain name"
+regex = '''\b(nodens-(staging|production)|personal-(sandbox|managed))\b'''
