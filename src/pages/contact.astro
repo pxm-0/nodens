@@ -2,7 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import ExternalLink from '../components/ExternalLink.astro';
-const email = import.meta.env.PUBLIC_CONTACT_EMAIL ?? 'dustin@nodens.dev';
+import { bookingHref, contactEmail as email } from '../lib/site';
 const github = import.meta.env.PUBLIC_GITHUB_URL ?? 'https://github.com/pxm-0';
 ---
 <BaseLayout title="Contact" description="Contact Nodens.">
@@ -13,8 +13,10 @@ const github = import.meta.env.PUBLIC_GITHUB_URL ?? 'https://github.com/pxm-0';
         <h1>Contact</h1>
       </div>
       <div class="formal-copy">
-        <p>For work, collaboration, correspondence, or a conversation with enough substance to justify the bandwidth.</p>
+        <p>For work, say what the problem is, what it costs, and what done would look like. That is the first step of every engagement, and it can start in an email.</p>
+        <p>For correspondence of any other kind, the same address works.</p>
         <ul class="formal-list">
+          {bookingHref && <li><ExternalLink href={bookingHref} label="Book a conversation" /></li>}
           <li><a href={`mailto:${email}`}>Email · {email}</a></li>
           <li><ExternalLink href={github} label="GitHub · pxm-0" /></li>
         </ul>

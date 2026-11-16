@@ -2,11 +2,11 @@
 import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import SiteFooter from '../../../components/SiteFooter.astro';
-import ExternalLink from '../../../components/ExternalLink.astro';
-import { entryHref, sortEntries } from '../../../lib/content';
+import { entryHref, hasRecord, sortEntries } from '../../../lib/content';
 
+// Only published records get a page; the rest are shown as cards on the work page.
 export async function getStaticPaths() {
-  const projects = await getCollection('projects');
+  const projects = await getCollection('projects', (project) => hasRecord(project));
   return projects.map((project) => ({ params: { id: project.id }, props: { project } }));
 }
 
@@ -18,40 +18,18 @@ const relatedEntries = sortEntries(
     ({ data }) => !data.draft && data.relatedProjects.some((relatedProject) => relatedProject.id === project.id),
   ),
 );
-const isMaintenance = project.data.recordState === 'maintenance';
 ---
 
-<BaseLayout
-  title={project.data.title}
-  description={project.data.summary}
-  robots={isMaintenance ? 'noindex,follow' : 'index,follow'}
->
+<BaseLayout title={project.data.title} description={project.data.summary}>
   <main class="article-shell" id="main">
     <article class="article">
       <header class="article-header">
         <p class="eyebrow">Project record / {project.data.title}</p>
-        {isMaintenance ? (
-          <>
-            <h1>Server migration in progress.</h1>
-            <p class="dek">The public Nodens record for {project.data.title} is temporarily unavailable while the site’s project surfaces move to the new server. Its current public stage is {project.data.stageLabel}. Verified destinations remain available below.</p>
-          </>
-        ) : (
-          <>
-            <h1>{project.data.title}</h1>
-            <p class="dek">{project.data.subtitle}</p>
-            {project.data.caveat && <p class="dek caveat">{project.data.caveat}</p>}
-          </>
-        )}
+        <h1>{project.data.title}</h1>
+        <p class="dek">{project.data.subtitle}</p>
+        {project.data.caveat && <p class="dek caveat">{project.data.caveat}</p>}
       </header>
-      {isMaintenance ? (
-        <div class="page-actions">
-          {project.data.links.map((link) => <ExternalLink class="text-link" href={link.href} label={link.kind} />)}
-          <a class="text-link" href="/engineering/">Return to engineering →</a>
-          <a class="text-link" href="/index/">Open index →</a>
-        </div>
-      ) : (
-        <div class="prose"><Content /></div>
-      )}
+      <div class="prose"><Content /></div>
       {relatedEntries.length > 0 && (
         <aside class="related-links" aria-label="Related entries">
           <p class="eyebrow">Related {relatedEntries.length === 1 ? 'entry' : 'entries'}</p>
@@ -60,7 +38,7 @@ const isMaintenance = project.data.recordState === 'maintenance';
           </ul>
         </aside>
       )}
-      {!isMaintenance && <a class="text-link" href="/engineering/">Return to engineering →</a>}
+      <a class="text-link" href="/engineering/">Return to engineering →</a>
     </article>
   </main>
   <SiteFooter slot="footer" />

@@ -2,13 +2,14 @@
 
 **A curated self-portrait in systems, texts, rituals, objects, and ongoing work.**
 
-Nodens is a public personal site designed as an exhibition first and a conventional portfolio second. The landing experience moves through different forms of attention: engineering, writing, coffee, audio, and the person implied by their arrangement.
+Nodens is a public personal site with two fronts. The root route is a landing page for consulting work. Behind it, the exhibition moves through different forms of attention: engineering, writing, coffee, audio, and the person implied by their arrangement.
 
 Behind the exhibition, every facet has a proper public section with projects, essays, notes, logs, formal About and Contact pages, and a direct index for visitors who do not want the ceremonial route.
 
 ## Initial state
 
-- full-screen exhibition landing with keyboard, wheel, swipe, and direct index navigation
+- consulting landing at the root, as full-screen frames with the exhibition's navigation: the offer, three shapes of work, the evidence, and one action
+- full-screen exhibition at `/exhibition/` with keyboard, wheel, swipe, and direct index navigation
 - engineering preview with honest project statuses
 - writing, coffee, and audio previews
 - section pages with content archives
@@ -83,6 +84,7 @@ Schemas are defined in `src/content.config.ts`. Draft entries are excluded from 
 
 ```text
 /
+├── exhibition/
 ├── engineering/
 │   └── projects/
 ├── writing/

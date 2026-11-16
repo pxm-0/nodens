@@ -8,6 +8,7 @@ stageLabel: Active / P0
 featureRank: 2
 recordState: maintenance
 summary: Private, Git-tracked control plane for workload inventory, trust boundaries, guarded operations, and health across Oreo Cloud.
+problem: "Owned systems are hard to read: what runs, where it runs, and which boundaries govern it."
 caveat: The public portfolio describes the architecture; operational surfaces remain private by design.
 stack:
   - TypeScript

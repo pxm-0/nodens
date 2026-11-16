@@ -128,21 +128,21 @@ if (!existsSync(robots)) {
 
 if (!existsSync(join(dist, 'social-card.png'))) fail('social-card.png is missing');
 
+// The home route is the consulting landing; the exhibition keeps its own route.
+// Both are sequences of frames, so they are told apart by the shell's label.
+const exhibitionLabel = 'aria-label="Nodens public exhibition"';
+const exhibitionFile = join(dist, 'exhibition', 'index.html');
+if (readFileSync(join(dist, 'index.html'), 'utf8').includes(exhibitionLabel)) {
+  fail('the home route still renders the exhibition');
+}
+if (!existsSync(exhibitionFile) || !readFileSync(exhibitionFile, 'utf8').includes(exhibitionLabel)) {
+  fail('the exhibition is missing from /exhibition/');
+}
+
 const sitemapFiles = allFiles.filter((file) => file.endsWith('.xml'));
 const sitemap = sitemapFiles.map((file) => readFileSync(file, 'utf8')).join('\n');
 if (!sitemap.includes(new URL('/', siteOrigin).href)) fail('sitemap does not include the home route');
-if (sitemap.includes('/engineering/projects/')) fail('sitemap includes a maintenance route');
 if (sitemap.includes('/404')) fail('sitemap includes the 404 route');
-
-for (const file of htmlFiles.filter((candidate) => relative(dist, candidate).startsWith('engineering/projects/'))) {
-  const html = readFileSync(file, 'utf8');
-  if (!hasMeta(html, 'name', 'robots') || !/name="robots" content="noindex,follow"/i.test(html)) {
-    fail(relative(dist, file) + ' is not noindex,follow');
-  }
-  if (!html.includes('<h1>Server migration in progress.</h1>') || !html.includes('Verified destinations remain available below.')) {
-    fail(relative(dist, file) + ' is missing the maintenance copy');
-  }
-}
 
 for (const route of publicRoutes) {
   if (!linkedRoutes.has(route)) fail('public route is orphaned: ' + route);
