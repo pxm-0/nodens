@@ -1,11 +1,6 @@
----
-interface Props { practice?: boolean }
-const { practice = false } = Astro.props;
----
-
 <footer class="site-footer">
-  <span>{practice ? 'Nodens / Dustin Aceveda' : 'Nodens / public edge'}</span>
-  {!practice && <span>A life rendered navigable, not exhaustive.</span>}
+  <span>Nodens / public edge</span>
+  <span>A life rendered navigable, not exhaustive.</span>
   <nav class="footer-nav" aria-label="Elsewhere on the site">
     <a href="/coffee/">Coffee</a>
     <a href="/audio/">Audio</a>

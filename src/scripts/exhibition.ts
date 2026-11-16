@@ -121,6 +121,11 @@ indexPanel?.addEventListener('cancel', (event) => {
   closeIndex();
 });
 document.querySelectorAll<HTMLElement>('[data-next]').forEach((item) => item.addEventListener('click', () => go(current + 1)));
+// A control can name the frame it leads to by that frame's id.
+document.querySelectorAll<HTMLElement>('[data-goto]').forEach((item) => item.addEventListener('click', () => {
+  const target = exhibitionFrames.findIndex((frame) => frame.id === item.dataset.goto);
+  if (target >= 0) go(target);
+}));
 
 document.addEventListener('keydown', (event) => {
   if (indexPanel?.open) {

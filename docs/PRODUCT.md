@@ -20,7 +20,7 @@ The landing states the offer plainly. The exhibition does not begin by describin
 
 ### Landing layer
 
-The root route is a scrolling page for a visitor who may hire. In order: the offer and the action, three shapes of work (Automate, Build, Embed), the evidence, how an engagement runs, who is behind it, and the action again.
+The root route is a sequence of full-screen frames for a visitor who may hire, moved by the same controls as the exhibition: Offer, Shapes (Automate, Build, Embed), one Evidence frame per system, Engagement, and Contact.
 
 - No public prices. The one action is "Start a conversation".
 - The action is the contact email until `PUBLIC_BOOKING_URL` is set at build time.
@@ -53,4 +53,4 @@ Deeper routes behave like proper public sites rather than forcing every visitor 
 
 **Concept in the encounter. Clarity in the archive.**
 
-The exhibition may be authored and indirect. The landing and the deeper pages must be readable, indexable, fast, and honest.
+The landing and the exhibition are both encounters, and they move the same way. The landing states its offer in its first frame; the exhibition may stay indirect. The deeper pages must be readable, indexable, fast, and honest.

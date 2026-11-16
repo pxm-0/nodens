@@ -8,7 +8,7 @@ Behind the exhibition, every facet has a proper public section with projects, es
 
 ## Initial state
 
-- consulting landing at the root: the offer, three shapes of work, the evidence, and one action
+- consulting landing at the root, as full-screen frames with the exhibition's navigation: the offer, three shapes of work, the evidence, and one action
 - full-screen exhibition at `/exhibition/` with keyboard, wheel, swipe, and direct index navigation
 - engineering preview with honest project statuses
 - writing, coffee, and audio previews

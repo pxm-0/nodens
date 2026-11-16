@@ -129,11 +129,13 @@ if (!existsSync(robots)) {
 if (!existsSync(join(dist, 'social-card.png'))) fail('social-card.png is missing');
 
 // The home route is the consulting landing; the exhibition keeps its own route.
+// Both are sequences of frames, so they are told apart by the shell's label.
+const exhibitionLabel = 'aria-label="Nodens public exhibition"';
 const exhibitionFile = join(dist, 'exhibition', 'index.html');
-if (readFileSync(join(dist, 'index.html'), 'utf8').includes('exhibition-frame')) {
+if (readFileSync(join(dist, 'index.html'), 'utf8').includes(exhibitionLabel)) {
   fail('the home route still renders the exhibition');
 }
-if (!existsSync(exhibitionFile) || !readFileSync(exhibitionFile, 'utf8').includes('exhibition-frame')) {
+if (!existsSync(exhibitionFile) || !readFileSync(exhibitionFile, 'utf8').includes(exhibitionLabel)) {
   fail('the exhibition is missing from /exhibition/');
 }
 

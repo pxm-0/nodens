@@ -1,6 +1,8 @@
 ---
-interface Props { exhibition?: boolean }
-const { exhibition = false } = Astro.props;
+interface Props { exhibition?: boolean; practice?: boolean }
+const { exhibition = false, practice = false } = Astro.props;
+// The exhibition and the landing are both sequences of frames with an index panel.
+const frames = exhibition || practice;
 const tagline = exhibition ? 'Public edge / 01' : 'Dustin Aceveda';
 ---
 
@@ -10,16 +12,15 @@ const tagline = exhibition ? 'Public edge / 01' : 'Dustin Aceveda';
     <small>{tagline}</small>
   </a>
   <nav class="utility-nav" aria-label="Primary">
-    <a class:list={{ 'nav-secondary': exhibition }} href="/engineering/">Work</a>
+    <a class:list={{ 'nav-secondary': frames }} href="/engineering/">Work</a>
     <a class="nav-secondary" href="/writing/">Writing</a>
     <a class="nav-secondary" href="/about/">About</a>
     <a href="/contact/">Contact</a>
-    {exhibition ? (
+    {!exhibition && <a href="/exhibition/">Exhibition</a>}
+    {frames && (
       <button class="index-toggle" id="indexToggle" aria-expanded="false" aria-controls="exhibitionIndex" aria-haspopup="dialog">
         Index <span>＋</span>
       </button>
-    ) : (
-      <a href="/exhibition/">Exhibition</a>
     )}
   </nav>
 </header>
