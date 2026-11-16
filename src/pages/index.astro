@@ -150,13 +150,13 @@ const evidence = [...ranked.filter(isLive), ...ranked.filter((project) => !isLiv
     </section>
 
     <section class="practice-who" aria-labelledby="who-title">
-      <h2 id="who-title">Who you would be working with.</h2>
+      <h2 id="who-title">Who you would be working <em>with.</em></h2>
       <div>
         <p>I am Dustin Aceveda, an AI/software engineer, systems builder, and writer interested in knowledge architecture, automation, infrastructure, and the small practices through which attention becomes visible.</p>
         <p>The same attention goes into writing, coffee, and audio. That side of the work is kept as an exhibition.</p>
         <div class="page-actions">
-          <a class="text-link" href="/about/">About →</a>
-          <a class="text-link" href="/exhibition/">Enter the exhibition →</a>
+          <a class="text-link" href="/about/">About <span aria-hidden="true">→</span></a>
+          <a class="text-link" href="/exhibition/">Enter the exhibition <span aria-hidden="true">→</span></a>
         </div>
       </div>
     </section>
@@ -169,5 +169,5 @@ const evidence = [...ranked.filter(isLive), ...ranked.filter((project) => !isLiv
       </div>
     </section>
   </main>
-  <SiteFooter slot="footer" />
+  <SiteFooter slot="footer" practice />
 </BaseLayout>
