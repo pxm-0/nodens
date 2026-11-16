@@ -75,6 +75,7 @@ const sign = (title: string) => `${pad(frameTitles.indexOf(title) + 1)} / ${pad(
             </p>
             <div class="practice-actions">
               <a class="practice-action" href={conversationHref}>Start a conversation <span aria-hidden="true">→</span></a>
+              <a class="frame-link practice-email" href={`mailto:${contactEmail}`}>{contactEmail}</a>
               <button class="frame-link" type="button" data-goto="evidence">See the work <span aria-hidden="true">→</span></button>
             </div>
           </div>

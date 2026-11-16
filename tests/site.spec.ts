@@ -31,6 +31,11 @@ test('the landing opens on the offer and its action', async ({ page }) => {
     await expect(action).toHaveAttribute('href', 'mailto:dustin@nodens.dev');
   }
   await expect(page.getByRole('link', { name: /start a conversation/i })).toBeInViewport();
+
+  // The address itself is on the first frame too, for visitors whose mail link opens nothing.
+  const address = activeFrame(page).getByRole('link', { name: 'dustin@nodens.dev' });
+  await expect(address).toBeInViewport();
+  await expect(address).toHaveAttribute('href', 'mailto:dustin@nodens.dev');
 });
 
 test('the landing moves frame by frame, like the exhibition', async ({ page }) => {
