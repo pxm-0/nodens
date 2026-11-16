@@ -388,7 +388,8 @@ body:has(.practice) .site-footer {
 
   /* Name left, status right on one baseline: a status is never stacked above its heading. */
   .practice-system {
-    grid-template-columns: minmax(0, 1fr) auto;
+    /* The name keeps its full width; on the narrowest phones the status wraps instead. */
+    grid-template-columns: minmax(min-content, 1fr) auto;
     column-gap: 1rem;
     row-gap: 1rem;
     align-items: baseline;
@@ -400,8 +401,10 @@ body:has(.practice) .site-footer {
   .practice-system > div:last-of-type { grid-column: 1 / -1; }
   .practice-system-subtitle { margin-top: 0; max-width: none; }
 
-  .practice-steps { grid-template-columns: repeat(2, 1fr); row-gap: 2.2rem; }
+  .practice-steps { grid-template-columns: repeat(2, 1fr); }
+  .practice-steps li { padding-bottom: 1.8rem; }
   .practice-steps li:nth-child(odd) { padding-left: 0; border-left: 0; }
+  .practice-steps li:nth-child(n+3) { border-top: 1px solid var(--rule); }
   /* The step number sits beside its name, for the same reason. */
   .practice-steps li {
     display: grid;

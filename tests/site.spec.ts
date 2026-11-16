@@ -92,4 +92,12 @@ test.describe('small phone', () => {
     const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
     expect(overflow).toBeLessThanOrEqual(0);
   });
+
+  test('a system name never runs into the status beside it', async ({ page }) => {
+    await page.goto('/');
+    const clipped = await page
+      .locator('#evidence h3')
+      .evaluateAll((names) => names.filter((name) => name.scrollWidth > name.clientWidth).map((name) => name.textContent));
+    expect(clipped).toEqual([]);
+  });
 });
