@@ -201,7 +201,7 @@
   .is-active #embed .core { transition-delay: .65s; }
 }
 
-/* 03 to 06 Evidence: one system per frame, on the night field the exhibition keeps for infrastructure. */
+/* 03 Evidence: the lead system in full, on the night field the exhibition keeps for infrastructure. */
 .practice .practice-case { grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); }
 /* The name hangs from the top, the record sits at the bottom, and the stack closes the left column. */
 .practice-case-name {
@@ -267,7 +267,45 @@
   gap: 0 1.6rem;
 }
 
-/* 07 Engagement: the order is the information, so the steps are numbered. */
+/* 04 Systems: the other ranked systems, one row each, as on the Shapes frame. */
+.practice .practice-systems { grid-template-rows: auto auto 1fr auto; }
+.practice-system-list {
+  display: grid;
+  grid-auto-rows: 1fr;
+}
+.practice-system {
+  display: grid;
+  grid-template-columns: minmax(0, .8fr) minmax(0, 1.5fr) minmax(6rem, auto);
+  column-gap: clamp(1.5rem, 4vw, 4rem);
+  align-items: center;
+  padding: clamp(.4rem, 1.4vh, 1rem) 0;
+  border-top: 1px solid rgba(216, 221, 215, .18);
+}
+.practice-system:last-child { border-bottom: 1px solid rgba(216, 221, 215, .18); }
+.practice-system h3 {
+  margin: 0;
+  font: 400 clamp(2rem, min(4.2vw, 8vh), 3.8rem)/.95 var(--serif);
+  letter-spacing: -.035em;
+}
+.practice-system .practice-case-stage { margin-top: .5rem; }
+.practice-system-record p {
+  margin: 0;
+  max-width: 40rem;
+  font: clamp(1rem, 1.3vw, 1.2rem)/1.55 var(--serif);
+}
+.practice-system-record .practice-system-problem {
+  margin-bottom: .35rem;
+  color: var(--soft);
+}
+.practice-system-links {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.practice-systems-more { justify-self: start; }
+
+/* 05 Engagement: the order is the information, so the steps are numbered. */
 .practice .practice-engagement { grid-template-rows: auto 1fr auto; }
 .practice-engagement .practice-heading {
   align-self: start;
@@ -310,7 +348,7 @@
   color: var(--soft);
 }
 
-/* 08 Contact: the question, the action, and who answers. */
+/* 06 Contact: the question, the action, and who answers. */
 .practice .practice-contact {
   grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr);
   grid-template-rows: auto 1fr auto;
@@ -378,11 +416,33 @@
   .practice-lede,
   .practice-shape p,
   .practice-case dd,
+  .practice-system-record p,
   .practice-steps p,
   .practice-contact-who p {
     font-size: .96rem;
     line-height: 1.48;
   }
+
+  /* A system row: name and status on one line, then what was built. Its links live on the work page. */
+  .practice-system {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: .3rem;
+    align-content: center;
+    padding: .5rem 0;
+  }
+  .practice-system-name {
+    display: grid;
+    grid-template-columns: minmax(min-content, 1fr) auto;
+    column-gap: 1rem;
+    align-items: baseline;
+  }
+  .practice-system h3 { font-size: 2rem; }
+  .practice-system .practice-case-stage {
+    margin: 0;
+    text-align: right;
+  }
+  .practice-system-record .practice-system-problem,
+  .practice-system-links { display: none; }
   .practice-actions {
     margin-top: .9rem;
     gap: .3rem 1.4rem;

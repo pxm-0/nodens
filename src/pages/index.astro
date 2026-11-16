@@ -36,12 +36,20 @@ const steps = [
 
 const ranked = sortProjects(await getCollection('projects')).filter((project) => project.data.featureRank !== undefined);
 const isLive = (project: CollectionEntry<'projects'>) => project.data.links.some((link) => link.kind === 'live');
-// A live product is the strongest proof, so it leads; the rest keep their feature rank.
-const evidence = [...ranked.filter(isLive), ...ranked.filter((project) => !isLive(project))];
+// A live product is the strongest proof, so it leads and gets a frame of its own;
+// the rest keep their feature rank and share the next frame.
+const [lead, ...others] = [...ranked.filter(isLive), ...ranked.filter((project) => !isLive(project))];
 
-// Offer, Shapes, one frame per system, Engagement, Contact.
-const frameCount = evidence.length + 4;
-const sign = (position: number) => `${String(position).padStart(2, '0')} / ${String(frameCount).padStart(2, '0')}`;
+const frameTitles = [
+  'Offer',
+  'Shapes',
+  ...(lead ? [lead.data.title] : []),
+  ...(others.length > 0 ? ['Systems'] : []),
+  'Engagement',
+  'Contact',
+];
+const pad = (value: number) => String(value).padStart(2, '0');
+const sign = (title: string) => `${pad(frameTitles.indexOf(title) + 1)} / ${pad(frameTitles.length)}`;
 ---
 
 <BaseLayout
@@ -50,12 +58,12 @@ const sign = (position: number) => `${String(position).padStart(2, '0')} / ${Str
   description="Dustin Aceveda automates the work that drains a team, builds the systems behind it, and embeds inside the team as a forward-deployed engineer."
 >
   <section class="exhibition-shell practice" aria-label="Nodens practice">
-    <p class="visually-hidden" id="frameStatus" aria-live="polite" aria-atomic="true">Frame 1 of {frameCount}: Offer</p>
+    <p class="visually-hidden" id="frameStatus" aria-live="polite" aria-atomic="true">Frame 1 of {frameTitles.length}: Offer</p>
 
     <main class="exhibition-stage" id="main">
       <section class="exhibition-frame practice-frame--offer is-active" data-title="Offer" data-route="The offer" data-tone="light" aria-hidden="false">
         <div class="frame-inner practice-offer">
-          <p class="frame-sign"><span>{sign(1)}</span>Offer</p>
+          <p class="frame-sign"><span>{sign('Offer')}</span>Offer</p>
           <h1 class="display practice-title">
             <span>Engineering</span>
             <span>that stays</span>
@@ -78,7 +86,7 @@ const sign = (position: number) => `${String(position).padStart(2, '0')} / ${Str
 
       <section class="exhibition-frame practice-frame--shapes" data-title="Shapes" data-route="Three shapes of work" data-tone="light" aria-hidden="true" inert>
         <div class="frame-inner practice-shapes">
-          <p class="frame-sign"><span>{sign(2)}</span>Shapes</p>
+          <p class="frame-sign"><span>{sign('Shapes')}</span>Shapes</p>
           <h2 class="display practice-heading">Three shapes <em>of work.</em></h2>
           <div class="practice-shape-list">
             {shapes.map((shape) => (
@@ -116,52 +124,83 @@ const sign = (position: number) => `${String(position).padStart(2, '0')} / ${Str
         </div>
       </section>
 
-      {evidence.map((project, index) => (
+      {lead && (
         <section
           class="exhibition-frame practice-frame--case"
-          id={index === 0 ? 'evidence' : undefined}
-          data-title={project.data.title}
-          data-route={project.data.stageLabel}
+          id="evidence"
+          data-title={lead.data.title}
+          data-route={lead.data.stageLabel}
           data-tone="dark"
           aria-hidden="true"
           inert
         >
           <div class="frame-inner practice-case">
-            <p class="frame-sign"><span>{sign(3 + index)}</span>Evidence</p>
+            <p class="frame-sign"><span>{sign(lead.data.title)}</span>Evidence</p>
             <div class="practice-case-name">
               <div>
-                <h2 class="display practice-case-title">{project.data.title}</h2>
-                <p class="practice-case-stage">{project.data.stageLabel}</p>
-                <p class="practice-case-subtitle">{project.data.subtitle}</p>
+                <h2 class="display practice-case-title">{lead.data.title}</h2>
+                <p class="practice-case-stage">{lead.data.stageLabel}</p>
+                <p class="practice-case-subtitle">{lead.data.subtitle}</p>
               </div>
-              {project.data.stack.length > 0 && (
+              {lead.data.stack.length > 0 && (
                 <ul class="practice-case-stack" aria-label="Built with">
-                  {project.data.stack.map((item) => <li>{item}</li>)}
+                  {lead.data.stack.map((item) => <li>{item}</li>)}
                 </ul>
               )}
             </div>
             <div class="practice-case-record">
               <dl>
-                {project.data.problem && <div><dt>Problem</dt><dd>{project.data.problem}</dd></div>}
-                <div><dt>Built</dt><dd>{project.data.summary}</dd></div>
-                {project.data.caveat && <div><dt>Note</dt><dd>{project.data.caveat}</dd></div>}
+                {lead.data.problem && <div><dt>Problem</dt><dd>{lead.data.problem}</dd></div>}
+                <div><dt>Built</dt><dd>{lead.data.summary}</dd></div>
+                {lead.data.caveat && <div><dt>Note</dt><dd>{lead.data.caveat}</dd></div>}
               </dl>
               <p class="practice-case-links">
-                {project.data.links.map((link) => (
+                {lead.data.links.map((link) => (
                   <a class="frame-link" href={link.href}>
-                    <span class="visually-hidden">{project.data.title} </span>{link.kind} <span aria-hidden="true">↗</span><span class="visually-hidden"> (external link)</span>
+                    <span class="visually-hidden">{lead.data.title} </span>{link.kind} <span aria-hidden="true">↗</span><span class="visually-hidden"> (external link)</span>
                   </a>
                 ))}
-                {index === evidence.length - 1 && <a class="frame-link" href="/engineering/">All work <span aria-hidden="true">→</span></a>}
+                {others.length === 0 && <a class="frame-link" href="/engineering/">All work <span aria-hidden="true">→</span></a>}
               </p>
             </div>
           </div>
         </section>
-      ))}
+      )}
+
+      {others.length > 0 && (
+        <section class="exhibition-frame practice-frame--case" data-title="Systems" data-route="Also built" data-tone="dark" aria-hidden="true" inert>
+          <div class="frame-inner practice-systems">
+            <p class="frame-sign"><span>{sign('Systems')}</span>Evidence</p>
+            <h2 class="display practice-heading">Also <em>built.</em></h2>
+            <div class="practice-system-list">
+              {others.map((project) => (
+                <article class="practice-system">
+                  <div class="practice-system-name">
+                    <h3>{project.data.title}</h3>
+                    <p class="practice-case-stage">{project.data.stageLabel}</p>
+                  </div>
+                  <div class="practice-system-record">
+                    {project.data.problem && <p class="practice-system-problem">{project.data.problem}</p>}
+                    <p>{project.data.summary}</p>
+                  </div>
+                  <p class="practice-system-links">
+                    {project.data.links.map((link) => (
+                      <a class="frame-link" href={link.href}>
+                        <span class="visually-hidden">{project.data.title} </span>{link.kind} <span aria-hidden="true">↗</span><span class="visually-hidden"> (external link)</span>
+                      </a>
+                    ))}
+                  </p>
+                </article>
+              ))}
+            </div>
+            <a class="frame-link practice-systems-more" href="/engineering/">All work <span aria-hidden="true">→</span></a>
+          </div>
+        </section>
+      )}
 
       <section class="exhibition-frame practice-frame--engagement" data-title="Engagement" data-route="How it runs" data-tone="light" aria-hidden="true" inert>
         <div class="frame-inner practice-engagement">
-          <p class="frame-sign"><span>{sign(frameCount - 1)}</span>Engagement</p>
+          <p class="frame-sign"><span>{sign('Engagement')}</span>Engagement</p>
           <h2 class="display practice-heading">How an engagement <em>runs.</em></h2>
           <ol class="practice-steps">
             {steps.map((step) => (
@@ -176,7 +215,7 @@ const sign = (position: number) => `${String(position).padStart(2, '0')} / ${Str
 
       <section class="exhibition-frame practice-frame--contact" data-title="Contact" data-route="Start a conversation" data-tone="dark" aria-hidden="true" inert>
         <div class="frame-inner practice-contact">
-          <p class="frame-sign"><span>{sign(frameCount)}</span>Contact</p>
+          <p class="frame-sign"><span>{sign('Contact')}</span>Contact</p>
           <h2 class="display practice-contact-title">What needs <em>to run?</em></h2>
           <div class="practice-actions">
             <a class="practice-action" href={conversationHref}>Start a conversation <span aria-hidden="true">→</span></a>
@@ -195,14 +234,14 @@ const sign = (position: number) => `${String(position).padStart(2, '0')} / ${Str
 
     <nav class="exhibition-nav" aria-label="Frame navigation">
       <button id="previousFrame" type="button" aria-label="Previous frame">←</button>
-      <div class="exhibition-counter" aria-hidden="true"><span id="frameNumber">01</span><i></i><span id="frameTotal">{String(frameCount).padStart(2, '0')}</span></div>
+      <div class="exhibition-counter" aria-hidden="true"><span id="frameNumber">01</span><i></i><span id="frameTotal">{pad(frameTitles.length)}</span></div>
       <button id="nextFrame" type="button" aria-label="Next frame">→</button>
     </nav>
 
     <dialog class="index-panel" id="exhibitionIndex" aria-labelledby="indexTitle">
       <button class="index-close" id="indexClose" type="button">Close index <span aria-hidden="true">×</span></button>
       <div class="index-panel-intro">
-        <p class="frame-sign"><span>Directory</span>{frameCount} frames</p>
+        <p class="frame-sign"><span>Directory</span>{frameTitles.length} frames</p>
         <h2 id="indexTitle">Practice index</h2>
         <p>Follow the sequence or go straight to a frame. The rest of the site is one link away.</p>
         <a class="frame-link" href="/index/">Open full site index <span aria-hidden="true">↗</span></a>

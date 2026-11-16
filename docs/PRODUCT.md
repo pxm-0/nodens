@@ -20,7 +20,7 @@ The landing states the offer plainly. The exhibition does not begin by describin
 
 ### Landing layer
 
-The root route is a sequence of full-screen frames for a visitor who may hire, moved by the same controls as the exhibition: Offer, Shapes (Automate, Build, Embed), one Evidence frame per system, Engagement, and Contact.
+The root route is a sequence of full-screen frames for a visitor who may hire, moved by the same controls as the exhibition: Offer, Shapes (Automate, Build, Embed), Evidence (the live product in full, then the other ranked systems together in one frame), Engagement, and Contact.
 
 - No public prices. The one action is "Start a conversation".
 - The action is the contact email until `PUBLIC_BOOKING_URL` is set at build time.

@@ -1,6 +1,6 @@
 import { expect, test, type Page } from '@playwright/test';
 
-const landingFrames = ['Offer', 'Shapes', 'Eli', 'LociGraph', 'Argus', 'Haruspex', 'Engagement', 'Contact'];
+const landingFrames = ['Offer', 'Shapes', 'Eli', 'Systems', 'Engagement', 'Contact'];
 const activeFrame = (page: Page) => page.locator('.exhibition-frame.is-active');
 
 // Walks the landing with the frame controls and checks that nothing is cut off.
@@ -42,6 +42,10 @@ test('the landing moves frame by frame, like the exhibition', async ({ page }) =
       for (const shape of ['Automate', 'Build', 'Embed']) {
         await expect(page.getByRole('heading', { level: 3, name: shape, exact: true })).toBeVisible();
       }
+    }
+    if (title === 'Systems') {
+      // The live product has its own frame; the rest follow here in their feature rank.
+      await expect(activeFrame(page).getByRole('heading', { level: 3 })).toHaveText(['LociGraph', 'Argus', 'Haruspex']);
     }
     await page.waitForTimeout(50);
     await page.keyboard.press('ArrowRight');
