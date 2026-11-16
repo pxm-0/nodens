@@ -8,6 +8,7 @@ stageLabel: Active / Phase IV
 featureRank: 1
 recordState: maintenance
 summary: Concept-centric memory architecture for evidence-bound claims, contradictions, revisions, and spatial retrieval.
+problem: Note systems preserve where a thought was stored and lose what the thought later became.
 caveat: Core development is active. Authentication, deployment readiness, and production hardening are not complete.
 stack:
   - TypeScript

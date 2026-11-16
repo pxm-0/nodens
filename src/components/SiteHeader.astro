@@ -1,23 +1,25 @@
 ---
 interface Props { exhibition?: boolean }
 const { exhibition = false } = Astro.props;
+const tagline = exhibition ? 'Public edge / 01' : 'Dustin Aceveda';
 ---
 
 <header class="site-header">
-  <a class="wordmark" href="/" aria-label="Nodens home">
+  <a class="wordmark" href="/" aria-label={`Nodens ${tagline}, home`}>
     <strong>Nodens</strong>
-    <small>Public edge / 01</small>
+    <small>{tagline}</small>
   </a>
   <nav class="utility-nav" aria-label="Primary">
-    <a href="/about/">About</a>
+    <a href="/engineering/">Work</a>
+    <a class="nav-secondary" href="/writing/">Writing</a>
+    <a class="nav-secondary" href="/about/">About</a>
     <a href="/contact/">Contact</a>
-    <a href="/now/">Now</a>
     {exhibition ? (
       <button class="index-toggle" id="indexToggle" aria-expanded="false" aria-controls="exhibitionIndex" aria-haspopup="dialog">
         Index <span>＋</span>
       </button>
     ) : (
-      <a href="/index/">Index</a>
+      <a href="/exhibition/">Exhibition</a>
     )}
   </nav>
 </header>

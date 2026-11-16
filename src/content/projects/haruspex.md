@@ -8,6 +8,7 @@ stageLabel: Active / v0
 featureRank: 3
 recordState: maintenance
 summary: Agent-neutral software-delivery diligence built around explicit gates, approvals, and durable evidence.
+problem: A green build produces a feeling of confidence, not evidence that a release is sound.
 caveat: The public repository is the verified destination while the delivery model continues to evolve.
 stack:
   - Python
