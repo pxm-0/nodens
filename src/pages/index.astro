@@ -2,7 +2,6 @@
 import { getCollection, type CollectionEntry } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SiteFooter from '../components/SiteFooter.astro';
-import ExternalLink from '../components/ExternalLink.astro';
 import '../styles/practice.css';
 import { sortProjects } from '../lib/content';
 import { contactEmail, conversationHref } from '../lib/site';
@@ -120,11 +119,15 @@ const evidence = [...ranked.filter(isLive), ...ranked.filter((project) => !isLiv
               <dl>
                 {project.data.problem && <div><dt>Problem</dt><dd>{project.data.problem}</dd></div>}
                 <div><dt>Built</dt><dd>{project.data.summary}</dd></div>
-                {project.data.caveat && <div><dt>Now</dt><dd>{project.data.caveat}</dd></div>}
+                {project.data.caveat && <div><dt>Note</dt><dd>{project.data.caveat}</dd></div>}
               </dl>
               {project.data.links.length > 0 && (
                 <p class="practice-system-links">
-                  {project.data.links.map((link) => <ExternalLink href={link.href} label={link.kind} />)}
+                  {project.data.links.map((link) => (
+                    <a href={link.href}>
+                      <span class="visually-hidden">{project.data.title} </span>{link.kind} <span aria-hidden="true">↗</span><span class="visually-hidden"> (external link)</span>
+                    </a>
+                  ))}
                 </p>
               )}
             </div>

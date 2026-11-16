@@ -14,10 +14,11 @@ export const contactEmail: string = import.meta.env.PUBLIC_CONTACT_EMAIL ?? 'dus
 
 function bookingUrl(value: string | undefined) {
   if (!value) return undefined;
-  if (!URL.canParse(value) || new URL(value).protocol !== 'https:') {
+  const url = URL.canParse(value) ? new URL(value) : undefined;
+  if (url?.protocol !== 'https:') {
     throw new Error(`PUBLIC_BOOKING_URL must be an https URL, got "${value}"`);
   }
-  return value;
+  return url.href;
 }
 
 // Setting PUBLIC_BOOKING_URL at build time replaces the email action with a booking link.
