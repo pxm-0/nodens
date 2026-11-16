@@ -28,9 +28,18 @@ No font files are committed in the initial state. The stack uses high-quality sy
 - one dominant idea per exhibition frame
 - layered evidence rather than empty minimalism
 - large shifts in scale
-- no default card grid on the landing
+- no default card grid on the landing or in the exhibition
 - deeper pages may use conventional lists and indexes
 - visible restraint must imply selection, not lack of material
+
+## Landing
+
+The consulting landing uses the same materials at page scale, one field per section: paper for the offer, lighter paper for the shapes of work, night for the evidence, petrol for the closing action.
+
+- rows and ruled strips, never cards
+- the primary action is the only filled block on the page
+- section headings carry themselves, with no label above a heading
+- one authored motion: the wine node arrives in each shape diagram as its row scrolls into view
 
 ## Motion
 
