@@ -72,6 +72,7 @@ function go(target: number) {
   const outgoing = exhibitionFrames[current];
   const incoming = exhibitionFrames[normalized];
   if (!outgoing || !incoming) return;
+  const hadFocus = outgoing.contains(document.activeElement);
 
   outgoing.classList.add('is-leaving');
   outgoing.classList.remove('is-active');
@@ -81,6 +82,11 @@ function go(target: number) {
   incoming.inert = false;
   incoming.setAttribute('aria-hidden', 'false');
   incoming.classList.add('is-active');
+  // The control that was used has just gone inert: keep keyboard focus in the sequence.
+  if (hadFocus) {
+    incoming.tabIndex = -1;
+    incoming.focus({ preventScroll: true });
+  }
   current = normalized;
   wheelDelta = 0;
   updateStatus();
@@ -88,6 +94,19 @@ function go(target: number) {
   window.setTimeout(() => {
     outgoing.classList.remove('is-leaving');
   }, transitionMs());
+}
+
+// A frame taller than a very small window scrolls inside itself. Reports whether it still has
+// content to show in that direction, and with `reveal` scrolls to it.
+function frameHasMore(direction: 1 | -1, reveal = false) {
+  const inner = exhibitionFrames[current]?.querySelector<HTMLElement>('.frame-inner');
+  if (!inner || getComputedStyle(inner).overflowY !== 'auto') return false;
+  const remaining = direction > 0 ? inner.scrollHeight - inner.clientHeight - inner.scrollTop : inner.scrollTop;
+  if (remaining <= 1) return false;
+  if (reveal) {
+    inner.scrollBy({ top: direction * inner.clientHeight * 0.8, behavior: prefersReducedMotion.matches ? 'auto' : 'smooth' });
+  }
+  return true;
 }
 
 function openIndex() {
@@ -135,12 +154,19 @@ document.addEventListener('keydown', (event) => {
     }
     return;
   }
+  // Browser shortcuts such as Alt+Left keep working, and Space still presses a focused control.
+  if (event.altKey || event.ctrlKey || event.metaKey) return;
+  const onControl = event.target instanceof Element && event.target.closest('a, button, input, select, textarea') !== null;
+  if (event.key === ' ' && onControl) return;
+
   if (['ArrowRight', 'ArrowDown', 'PageDown', ' '].includes(event.key)) {
     event.preventDefault();
+    if (event.key !== 'ArrowRight' && frameHasMore(1, true)) return;
     go(current + 1);
   }
   if (['ArrowLeft', 'ArrowUp', 'PageUp'].includes(event.key)) {
     event.preventDefault();
+    if (event.key !== 'ArrowLeft' && frameHasMore(-1, true)) return;
     go(current - 1);
   }
   if (event.key.toLowerCase() === 'i') openIndex();
@@ -148,6 +174,11 @@ document.addEventListener('keydown', (event) => {
 
 document.addEventListener('wheel', (event) => {
   if (indexPanel?.open || Date.now() - lastNavigationAt < transitionMs() || event.ctrlKey) return;
+  // The wheel scrolls such a frame natively; it changes frame only once there is nothing left.
+  if (frameHasMore(event.deltaY > 0 ? 1 : -1)) {
+    wheelDelta = 0;
+    return;
+  }
   window.clearTimeout(wheelTimer);
   wheelDelta += event.deltaY + event.deltaX;
   if (Math.abs(wheelDelta) >= 100) go(current + (wheelDelta > 0 ? 1 : -1));

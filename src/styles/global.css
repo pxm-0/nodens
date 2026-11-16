@@ -107,6 +107,8 @@ img, svg { max-width: 100%; }
   opacity: 0;
   transform: translate3d(-5%, 0, 0) scale(.99);
 }
+/* A frame takes focus when the control that led to it goes inert; the frame itself needs no ring. */
+.exhibition-stage .exhibition-frame:focus-visible { outline: 0; }
 .frame-inner {
   position: relative;
   width: min(100%, var(--max));

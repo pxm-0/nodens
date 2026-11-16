@@ -57,6 +57,14 @@ test('"See the work" jumps to the evidence', async ({ page }) => {
   await expect(page.getByRole('heading', { level: 2, name: 'Eli', exact: true })).toBeVisible();
 });
 
+test('Space on a focused control presses it, and focus follows into the new frame', async ({ page }) => {
+  await page.goto('/');
+  await page.getByRole('button', { name: /see the work/i }).focus();
+  await page.keyboard.press('Space');
+  await expect(activeFrame(page)).toHaveAttribute('data-title', 'Eli');
+  await expect(activeFrame(page)).toBeFocused();
+});
+
 test('the landing index lists every frame and leads to the exhibition and the work', async ({ page }) => {
   await page.goto('/');
   await page.getByRole('button', { name: /index/i }).click();
@@ -131,6 +139,28 @@ test.describe('mobile', () => {
     await expect(primary.getByRole('link', { name: 'Contact' })).toBeVisible();
     await expect(primary.getByRole('link', { name: 'Exhibition' })).toBeVisible();
     await expect(page.getByRole('link', { name: /start a conversation/i })).toBeInViewport();
+  });
+});
+
+test.describe('short window', () => {
+  test.use({ viewport: { width: 900, height: 480 } });
+
+  test('a frame taller than the window scrolls before the keys change frame', async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await page.goto('/');
+    const inner = activeFrame(page).locator('.frame-inner');
+    expect(await inner.evaluate((element) => element.scrollHeight - element.clientHeight)).toBeGreaterThan(0);
+
+    await page.keyboard.press('ArrowDown');
+    await expect.poll(() => inner.evaluate((element) => element.scrollTop)).toBeGreaterThan(0);
+    await expect(activeFrame(page)).toHaveAttribute('data-title', 'Offer');
+
+    // Once the frame has nothing left to show, the same key moves on.
+    for (let press = 0; press < 6; press++) {
+      await page.waitForTimeout(50);
+      await page.keyboard.press('ArrowDown');
+    }
+    await expect(activeFrame(page)).not.toHaveAttribute('data-title', 'Offer');
   });
 });
 
