@@ -411,7 +411,7 @@ img, svg { max-width: 100%; }
 .entry-row a:hover { color: var(--wine); }
 .entry-row time,
 .entry-row small { font: .58rem/1.4 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
-.project-card { padding: 1.5rem 0 2rem; border-top: 1px solid var(--rule); }
+.project-card { padding: 1.5rem 0 2rem; border-top: 1px solid var(--rule); scroll-margin-top: 6rem; }
 .project-card h3 { margin: 0; font: 400 clamp(2.1rem, 4vw, 4rem)/1 var(--serif); }
 .project-card .project-meta { display: flex; flex-wrap: wrap; gap: .7rem 1.5rem; margin: .9rem 0; font: .58rem/1.5 var(--mono); text-transform: uppercase; letter-spacing: .12em; color: var(--muted); }
 .project-card p { max-width: 49rem; line-height: 1.65; }

@@ -142,18 +142,7 @@ if (!existsSync(exhibitionFile) || !readFileSync(exhibitionFile, 'utf8').include
 const sitemapFiles = allFiles.filter((file) => file.endsWith('.xml'));
 const sitemap = sitemapFiles.map((file) => readFileSync(file, 'utf8')).join('\n');
 if (!sitemap.includes(new URL('/', siteOrigin).href)) fail('sitemap does not include the home route');
-if (sitemap.includes('/engineering/projects/')) fail('sitemap includes a maintenance route');
 if (sitemap.includes('/404')) fail('sitemap includes the 404 route');
-
-for (const file of htmlFiles.filter((candidate) => relative(dist, candidate).startsWith('engineering/projects/'))) {
-  const html = readFileSync(file, 'utf8');
-  if (!hasMeta(html, 'name', 'robots') || !/name="robots" content="noindex,follow"/i.test(html)) {
-    fail(relative(dist, file) + ' is not noindex,follow');
-  }
-  if (!html.includes('<h1>Server migration in progress.</h1>') || !html.includes('Verified destinations remain available below.')) {
-    fail(relative(dist, file) + ' is missing the maintenance copy');
-  }
-}
 
 for (const route of publicRoutes) {
   if (!linkedRoutes.has(route)) fail('public route is orphaned: ' + route);

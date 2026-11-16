@@ -118,6 +118,23 @@ test('section pages return to the exhibition, not the landing', async ({ page })
   await expect(page).toHaveURL(/\/exhibition\/$/);
 });
 
+test('the work page never leads to a maintenance notice', async ({ page }) => {
+  await page.goto('/engineering/');
+  // No record is published yet, so no card links to a record page.
+  await expect(page.locator('a[href^="/engineering/projects/"]')).toHaveCount(0);
+  await expect(page.locator('#eli').getByRole('link', { name: /live/i })).toBeVisible();
+
+  const response = await page.goto('/engineering/projects/eli/');
+  expect(response?.status()).toBe(404);
+});
+
+test('an entry sends its related project to that project on the work page', async ({ page }) => {
+  await page.goto('/engineering/locigraph-phase-four/');
+  await page.getByRole('complementary', { name: 'Related projects' }).getByRole('link', { name: 'LociGraph' }).click();
+  await expect(page).toHaveURL(/\/engineering\/#locigraph$/);
+  await expect(page.locator('#locigraph')).toBeInViewport();
+});
+
 test.describe('mobile', () => {
   // Shorter than the device, as a phone browser's own bars leave it.
   test.use({ viewport: { width: 390, height: 700 } });

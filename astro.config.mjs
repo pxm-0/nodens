@@ -9,10 +9,7 @@ export default defineConfig({
   trailingSlash: 'always',
   integrations: [
     sitemap({
-      filter: (page) => {
-        const pathname = new URL(page).pathname;
-        return !pathname.startsWith('/engineering/projects/') && pathname !== '/404/';
-      },
+      filter: (page) => new URL(page).pathname !== '/404/',
     }),
   ],
   build: {
