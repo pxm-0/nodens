@@ -26,9 +26,8 @@ Key current blockers:
 | Brighella | Archive · Prototype | Graph-guided app shipper that decomposes requests into bounded, validated artifacts for smaller coding models. | Source: `https://github.com/pxm-0/brighella` |
 | Seshat | Archive · P0 planning | AI-native long-form writing environment with durable editing, staged AI assistance, version history, and cost controls. | Source: `https://github.com/pxm-0/seshat` |
 | Oreo Cloud | Archive · Infrastructure umbrella | Owned infrastructure for turning project designs into repeatable, observable deployments. | No outbound link |
-| Hastur | Archive · Private early build | Private watcher for recurring work, system events, and conditions that deserve attention. | No outbound link |
 
-- The exhibition engineering frame shows only LociGraph and Argus; Engineering and the full Index list all eight, featured first.
+- The exhibition engineering frame shows only LociGraph and Argus; Engineering and the full Index list all seven, featured first.
 - All internal `/engineering/projects/<id>/` routes remain maintenance pages for this launch, including projects with working external destinations.
 - Maintenance pages use `noindex,follow`, remain reachable from project cards, and are excluded from the sitemap.
 - Maintenance copy becomes project-specific:
@@ -41,7 +40,7 @@ Key current blockers:
 - External links stay in the same tab, use a visible `↗`, and include assistive “external link” text. No placeholder, private, or unchecked destinations are rendered.
 - Relate `locigraph-phase-four` to LociGraph and `from-vision-to-project` to Oreo Cloud. Render reciprocal “Related project/entry” links.
 - Drive exhibition and index routes from content data instead of duplicated hardcoded slugs.
-- Refresh `/now/` to “Revised August 2026,” grouping LociGraph/Argus under Building, Haruspex/Eli under Shipping, Brighella/Seshat/Hastur under Incubating, and Oreo Cloud under Infrastructure. Preserve the existing writing, brewing, and listening material.
+- Refresh `/now/` to “Revised August 2026,” grouping LociGraph/Argus under Building, Haruspex/Eli under Shipping, Brighella/Seshat under Incubating, and Oreo Cloud under Infrastructure. Preserve the existing writing, brewing, and listening material.
 - Update About to identify Dustin as an AI/software engineer, systems builder, and writer. Keep Contact limited to the verified domain email and GitHub profile.
 
 ### Content interfaces
