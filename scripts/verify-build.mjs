@@ -128,6 +128,15 @@ if (!existsSync(robots)) {
 
 if (!existsSync(join(dist, 'social-card.png'))) fail('social-card.png is missing');
 
+// The home route is the consulting landing; the exhibition keeps its own route.
+const exhibitionFile = join(dist, 'exhibition', 'index.html');
+if (readFileSync(join(dist, 'index.html'), 'utf8').includes('exhibition-frame')) {
+  fail('the home route still renders the exhibition');
+}
+if (!existsSync(exhibitionFile) || !readFileSync(exhibitionFile, 'utf8').includes('exhibition-frame')) {
+  fail('the exhibition is missing from /exhibition/');
+}
+
 const sitemapFiles = allFiles.filter((file) => file.endsWith('.xml'));
 const sitemap = sitemapFiles.map((file) => readFileSync(file, 'utf8')).join('\n');
 if (!sitemap.includes(new URL('/', siteOrigin).href)) fail('sitemap does not include the home route');
