@@ -30,6 +30,7 @@ const projects = defineCollection({
     featureRank: z.number().int().positive().optional(),
     recordState: z.enum(['maintenance', 'published']).default('maintenance'),
     summary: z.string(),
+    problem: z.string().optional(),
     caveat: z.string().optional(),
     stack: z.array(z.string()).default([]),
     links: z

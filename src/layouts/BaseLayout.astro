@@ -7,6 +7,7 @@ interface Props {
   title?: string;
   description?: string;
   exhibition?: boolean;
+  practice?: boolean;
   type?: 'website' | 'article';
   robots?: 'index,follow' | 'noindex,follow';
   publishedAt?: Date;
@@ -17,6 +18,7 @@ const {
   title = siteName,
   description = defaultDescription,
   exhibition = false,
+  practice = false,
   type = 'website',
   robots = 'index,follow',
   publishedAt,
@@ -68,9 +70,9 @@ const structuredData = [
     <script type="application/ld+json" is:inline set:html={JSON.stringify(structuredData)}></script>
     <title>{pageTitle}</title>
   </head>
-  <body class:list={{ 'is-exhibition': exhibition }}>
+  <body class:list={{ 'is-exhibition': exhibition || practice }}>
     <a class="skip-link" href="#main">Skip to content</a>
-    <SiteHeader exhibition={exhibition} />
+    <SiteHeader exhibition={exhibition} practice={practice} />
     <slot />
     <slot name="footer" />
   </body>

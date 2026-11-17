@@ -43,9 +43,10 @@ A project caveat is not a disclaimer buried at the bottom. It is part of the pub
 The content filename is the canonical project ID. Entry filenames are likewise the
 canonical IDs within their section; do not add manual `slug` fields.
 
-`recordState: maintenance` keeps an internal project record reachable but sends
-`noindex,follow` and shows only verified destinations. A record must explicitly move
-to `published` before it exposes its full content or becomes indexable.
+A project gets its own record page only when its `recordState` is `published`.
+With `recordState: maintenance` no page is built: the project appears as a card on
+the work page with its summary, caveat and verified destinations, and links to it
+from entries lead to that card.
 
 ## Future collections
 

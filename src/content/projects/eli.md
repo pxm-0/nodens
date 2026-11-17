@@ -8,6 +8,7 @@ stageLabel: Live
 featureRank: 4
 recordState: maintenance
 summary: Voice journaling companion with adaptive turn-taking and layered memory across sessions.
+problem: Spoken reflection is usually treated as disposable once the conversation ends.
 caveat: The live product and source repository are the verified public destinations.
 stack:
   - Voice interaction

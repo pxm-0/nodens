@@ -53,8 +53,14 @@ export function entryRouteId(entry: CollectionEntry<'entries'>) {
   return entry.id.startsWith(prefix) ? entry.id.slice(prefix.length) : entry.id;
 }
 
+// A project gets its own record page only once that record is published.
+export function hasRecord(project: CollectionEntry<'projects'>) {
+  return project.data.recordState === 'published';
+}
+
+// Until then, a link to the project leads to its card on the work page.
 export function projectHref(project: CollectionEntry<'projects'>) {
-  return `/engineering/projects/${project.id}/`;
+  return hasRecord(project) ? `/engineering/projects/${project.id}/` : `/engineering/#${project.id}`;
 }
 
 export function formatDate(date: Date) {
