@@ -1,7 +1,29 @@
+name: nodens
+
 services:
+  # `docker compose up -d`: astro dev with hot reload at http://127.0.0.1:4321
+  dev:
+    build: .devcontainer
+    command: sh -c 'cmp -s package-lock.json node_modules/.ci-lock || { npm ci && cp package-lock.json node_modules/.ci-lock; }; exec npm run dev -- --host 0.0.0.0 --port 4321'
+    ports:
+      - "127.0.0.1:4321:4321"
+    volumes:
+      - .:/app
+      # Linux-only installs and build output; never shared with the macOS host.
+      - node_modules:/app/node_modules
+      - astro_cache:/app/.astro
+      - dist:/app/dist
+
+  # `docker compose up --build -d nodens`: the production image at http://127.0.0.1:8083.
+  # 8082 stays free for the host's production workload.
   nodens:
     build: .
-    container_name: nodens
+    profiles: [image]
     restart: unless-stopped
     ports:
-      - "127.0.0.1:8082:80"
+      - "127.0.0.1:8083:80"
+
+volumes:
+  node_modules:
+  astro_cache:
+  dist:

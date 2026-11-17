@@ -10,10 +10,12 @@ ghcr.io/pxm-0/nodens@sha256:... image ID and changed only through Argus PRs.
 ## Local container
 
 ~~~bash
-docker compose up --build -d
+docker compose --profile image up --build -d nodens
 ~~~
 
-This is loopback-only on port 8082. It does not use or modify port 8081.
+This is loopback-only on port 8083, so it does not use or modify the workload ports
+8081 and 8082. `docker compose up -d` without the profile starts the hot-reload dev
+server instead; see "Develop" in the README.
 
 ## Publishing
 

@@ -1,0 +1,7 @@
+{
+  "name": "nodens",
+  "dockerComposeFile": "../docker-compose.yml",
+  "service": "dev",
+  "workspaceFolder": "/app",
+  "shutdownAction": "none"
+}
