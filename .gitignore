@@ -8,3 +8,4 @@ dist/
 *.log
 test-results/
 .claude/
+playwright-report/
