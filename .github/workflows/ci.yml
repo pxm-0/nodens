@@ -46,4 +46,4 @@ jobs:
           severity: HIGH,CRITICAL
           vuln-type: os,library
       - name: Verify container health, routes, and headers
-        run: scripts/container-smoke.sh nodens:ci
+        run: scripts/container-smoke.sh nodens:ci 8082

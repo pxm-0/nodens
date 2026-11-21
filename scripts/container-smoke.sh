@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 # Smoke-test a built nodens image on loopback: health, routes, 404 page and headers.
-# Usage: scripts/container-smoke.sh <image> [host-port]
+# Usage: scripts/container-smoke.sh <image> <loopback-host-port>
 set -euo pipefail
 
-image="${1:?usage: container-smoke.sh <image> [host-port]}"
-port="${2:-8082}"
+image="${1:?usage: container-smoke.sh <image> <loopback-host-port>}"
+port="${2:?usage: container-smoke.sh <image> <loopback-host-port>}"
 name="nodens-smoke-$$"
 base="http://127.0.0.1:${port}"
 page="$(mktemp)"
