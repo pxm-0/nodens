@@ -45,17 +45,5 @@ jobs:
           ignore-unfixed: true
           severity: HIGH,CRITICAL
           vuln-type: os,library
-      - run: docker run --detach --name nodens-ci --publish 127.0.0.1:8082:80 nodens:ci
       - name: Verify container health, routes, and headers
-        run: |
-          for attempt in {1..30}; do
-            curl --fail --silent --show-error http://127.0.0.1:8082/healthz && break
-            sleep 1
-          done
-          curl --fail --silent --show-error http://127.0.0.1:8082/
-          test "$(curl --silent --output "$RUNNER_TEMP/nodens-404.html" --write-out '%{http_code}' http://127.0.0.1:8082/unlisted-room)" = 404
-          grep --quiet 'Nothing is exhibited here.' "$RUNNER_TEMP/nodens-404.html"
-          curl --fail --silent --show-error --head http://127.0.0.1:8082/ | grep --ignore-case --quiet '^content-security-policy:'
-          curl --fail --silent --show-error --head http://127.0.0.1:8082/healthz | grep --ignore-case --quiet '^cache-control: no-store'
-      - if: always()
-        run: docker rm --force nodens-ci || true
+        run: scripts/container-smoke.sh nodens:ci

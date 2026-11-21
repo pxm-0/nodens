@@ -17,7 +17,10 @@ This is loopback-only on port 8082. It does not use or modify port 8081.
 
 ## Publishing
 
-The Publish image workflow runs only after a successful CI run on main. It publishes
+The Publish image workflow runs only after a successful CI run on main. It builds the
+image once, scans it with Trivy, smoke-tests it, then pushes that same image and
+attaches a signed GitHub build-provenance attestation
+(`gh attestation verify oci://ghcr.io/pxm-0/nodens@sha256:... --repo pxm-0/nodens`). It publishes
 ghcr.io/pxm-0/nodens:<commit-sha> and writes the immutable
 ghcr.io/pxm-0/nodens@sha256:... reference, commit SHA, and tags to the run summary.
 Pin that reference in the Argus workload to deploy it.
