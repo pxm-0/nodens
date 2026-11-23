@@ -30,6 +30,6 @@
     "@astrojs/check": "0.9.12",
     "@playwright/test": "1.62.1",
     "lighthouse": "13.4.1",
-    "typescript": "5.9.3"
+    "typescript": "7.0.2"
   }
 }
