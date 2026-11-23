@@ -18,8 +18,8 @@
     "check:links": "node scripts/check-external-links.mjs"
   },
   "dependencies": {
-    "@astrojs/sitemap": "3.7.5",
-    "astro": "7.3.8"
+    "@astrojs/sitemap": "3.7.6",
+    "astro": "7.4.13"
   },
   "engines": {
     "node": "22.19.0",
@@ -28,8 +28,8 @@
   "packageManager": "npm@11.12.1",
   "devDependencies": {
     "@astrojs/check": "0.9.12",
-    "@playwright/test": "1.62.1",
-    "lighthouse": "13.4.1",
+    "@playwright/test": "1.65.1",
+    "lighthouse": "13.6.0",
     "typescript": "5.9.3"
   }
 }
